@@ -15,15 +15,170 @@ Summary section of this document, go to Addins, and select the `Word count` addi
 This addin counts words using two different algorithms, but the results should be similar and as long as you're in the ballpark of 750 words, you're good! 
 The addin will ignore code chunks and only count the words in prose.
 
+General research question:
+
+Is there a correlation between the racial majority of the neighborhood and the number of allegations against police officers? Is there a correlation between the racial majority of the neighborhood and how likely the allegation is to be disciplined?
+
+Sub questions:
+Which neighborhoods are complaints most likely to be disciplined? Sustained? Exonerated? (which means that the incident was deemed lawful and proper)
+Are repeat complaints against an officer more likely to be sustained? Overruled? 
+Does the race of the officer/complainant impact how likely a complaint is to be disciplined?
+Does the rank/time as an officer impact how likely the officer is disciplined?
+Does the rank/time as an officer impact how likely the officer has more complaints against them?
+
+Introducing our data:
+
+We are using data collected from the Invisible Institute, an investigative journalism production company on the South Side of Chicago. In 2007, the Invisible Institute sued the city of Chicago, demanding the release of complaint records against the Chicago Police Department. The files were finally released in 2016, revealing over 100,000 complaint records to the public. This data is publicly available at https://github.com/invinst/chicago-police-data. This dataset is massive, as such, we will only be using a small subset of the data. Here are links to the raw data:
+
+Community demographics: https://github.com/invinst/chicago-police-data/blob/master/data/context_data/district_demographics/Districts.csv
+ 
+Accused officer: https://github.com/invinst/chicago-police-data/blob/master/data/older_data/cleaned_data/complaints-accused_2000-2016_2016-11.csv.gz 
+ 
+Complainants: https://github.com/invinst/chicago-police-data/blob/master/data/older_data/cleaned_data/complaints-complainants_2000-2016_2016-11.csv.gz 
+ 
+Content of complaints: https://github.com/invinst/chicago-police-data/blob/master/data/older_data/cleaned_data/complaints-complaints_2000-2016_2016-11.csv.gz 
+ 
+Active duty officer: https://github.com/invinst/chicago-police-data/blob/master/data/context_data/CPD%20Employees%20active-duty-only.csv 
+
+
+
 You can also load your data here and present any analysis results / plots, but I strongly urge you to keep that to a minimum (maybe only the most important graphic, if you have one you can choose). 
 And make sure to hide your code with  `echo = FALSE` unless the point you are trying to make is about the code itself.
 Your results with proper output and graphics go in your presentation, this space is for a brief summary of your project.
 
 ```{r load-data, echo = FALSE}
-# load data here, if you like
+library(readr)
+library(tidyverse)
+
+district_demographics <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/district_demographics/Districts.csv")
+
+active_duty_officers <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/CPD%20Employees%20active-duty-only.csv")
+
+#The officers accused
+complaints_accused <- read_csv("data/complaints-accused_2000-2016_2016-11.csv")
+
+#those who made the complaints
+complainants <- read_csv("data/complaints-complainants_2000-2016_2016-11 (1).csv")
+
+#What complaints were made (more categorical data)
+complaints_made <- read_csv("data/complaints-complaints_2000-2016_2016-11 (1).csv")
+
+glimpse(district_demographics)
+glimpse(active_duty_officers)
+glimpse(complaints_made)
 ```
 
+Below is the Codebook for our datasets
+
+Codebook:
+
+District_demographics: 
+`District_No`: District number
+`District_Name`: The name of the district
+`Population`: The number of people in each district
+`Latino`: The Latino population in the district
+`White`: The white population in the district
+`Black`: The Black population in the district
+Native_American: The Native American population in the district
+Asian: The Asian population in the district
+Other: The number of people in a district where race is not recorded or does not fall into the above categories
+Latino%: The percent of Latino people in a district
+White%: The percent of White people in a district
+Black%: The percent of Black people in a district
+Native_American%: The percent of Native American people in a district
+Asian%: The percent of Asian people in a district
+Other%: The percent of people in a district where race is not recorded or does not fall into the above categories
+Majority: What the racial majority in a district is
+
+Complaints-accused
+Row_id: The row number
+Cr_id: Individual identification number for each complaint
+Birth_year: Birth year of officer
+Gender: Gender of officer
+Race: Race of officer
+Appointed_date: Date the officer was appointed
+Curent_unit: Current unit of officer
+Current_rank: Current rank of officer
+Current_star: The star number of the officer accused
+Complaint_category: The category of the complaint against the officer
+Recommend_finding: The recommended findings following an investigation of the complaint. Possible outcomes are unfounded (UN), exonerated (EX), not sustained (NS) and Sustained (SU).
+Recommended_discipline: The recommended disciplinary action taken against the officer
+Final_finding: The final findings following an investigation of the complaint. Possible outcomes are unfounded (UN), exonerated (EX), not sustained (NS) and Sustained (SU).
+Final_discipline: The actual disciplinary action taken against the officer
+First_name: First name of officer
+first _name_NS: First name of officer
+Full_name: Full name of officer
+Last_name: Last name of officer
+last_name_NS: Last name of officer
+Middle_initial: Middle initial of officer
+Middle_initial2: Second middle initial of officer
+Suffix_name: Suffix of officer
+
+Complaints-complainants
+Gender: Gender of complainant
+Age: Age of complainant
+Race: Race of complainant
+
+Complaints-complaints_2000-2016_2016-11
+Row_id: The row number
+Cr_id: Individual identification number for each complaint
+Beat: Which beat the the complaint issue occured
+Location_code: The location code of where the complaint issue occured
+Address_number: The address number where the complaint issue occured
+Street: The street where the complaint issue occured
+Apartment_number: The apartment number where the complaint issue occured
+City_state: The city where the complaint issue occured
+Incident_date: The date when the complaint issue occured
+Incident_time: The time that the complaint issue occurred 
+Complaint_date: The date the complaint was made
+Closed_date: The date the complaint was closed
+
+active-duty-only
+Last_nme: Last name of officer
+First_nme: First name of officer
+Employee_position: Position of officer
+Cpd_unit_assigned_no: CPD unit number of officer
+Unit_assigned_no: Number of the unit the officer was assigned to
+Units_Desc: District of officer
+Age: Age of officer
+Appointed_date: Date officer was appointed
+Sex_code_cd: Sex of officer
+Race: Race of officer
+Star_no: The star number of the police officer
+sworn_officer_I: Whether officer is a sworn officer or not
+
+
 ## Presentation
+
+
+Hypothesis: We will see more complaints from Black residents, regardless of the racial makeup of the neighborhood.  We expect to see more allegations per capita in neighborhoods with higher proportions of Black residents.
+
+Is there a correlation between the racial majority of the neighborhood and the number of allegations against police officers? 
+Outcome – number of allegations against officers
+Predictor – neighborhood’s racial demographics (likely percentage of one racial group)
+Statistical methods  – calculating correlation coefficient 
+Ways to display this data – geom(point)
+
+Is there a correlation between the racial majority of the neighborhood and how likely the allegation is to be disciplined?
+Outcome – Proportion of allegations disciplined
+Predictor – neighborhood’s racial demographics (likely percentage of one racial group)
+Statistical methods – determine proportion of each complaints resulting in discipline or finding of fault in each neighborhood
+
+
+I calculated the average age and the number of proportions of complainants by race and gender. Even without the proportion calculated and looking at the frequency for each group, we can see that there's a large amount of complainants coming from Black male and female residents. 
+
+```{r}
+
+#calculating total for the proportions 
+total <- complainants %>%
+  nrow()
+
+complainants %>%
+  group_by(race, gender) %>%
+  summarise(mean = mean(age, na.rm = TRUE), n_1 = n(), prop = n_1/total)
+
+```
+
 
 Our presentation can be found [here](presentation/presentation.html).
 
