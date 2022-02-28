@@ -1,6 +1,6 @@
+
 Project title
-================
-by Team name
+Elly, Sokona and Ella
 
 ## Summary
 
