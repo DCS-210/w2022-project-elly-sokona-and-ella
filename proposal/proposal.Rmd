@@ -12,7 +12,6 @@ library(broom)
 ## 1. Introduction
 
 General research question:
-
 Is there a correlation between the racial majority of the neighborhood and the number of allegations against police officers? Is there a correlation between the racial majority of the neighborhood and how likely the allegation is to be disciplined?
 
 Sub questions:
@@ -35,8 +34,6 @@ Complainants: https://github.com/invinst/chicago-police-data/blob/master/data/ol
 Content of complaints: https://github.com/invinst/chicago-police-data/blob/master/data/older_data/cleaned_data/complaints-complaints_2000-2016_2016-11.csv.gz 
  
 Active duty officer: https://github.com/invinst/chicago-police-data/blob/master/data/context_data/CPD%20Employees%20active-duty-only.csv 
-
-
 
 ## 2. Data
 

@@ -1,4 +1,4 @@
-Project title
+Elly, Sokona and Ella
 ================
 by Team name
 

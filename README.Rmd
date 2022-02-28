@@ -1,5 +1,5 @@
 ---
-title: Project title
+title: Elly, Sokona and Ella
 author: by Team name
 output: github_document
 ---
