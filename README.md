@@ -229,15 +229,15 @@ complainant `Race`: Race of complainant
 
 Complaints-complaints_2000-2016_2016-11 `Row_id`: The row number
 `Cr_id`: Individual identification number for each complaint `Beat`:
-Which beat the the complaint issue occured `Location_code`: The location
-code of where the complaint issue occured `Address_number`: The address
-number where the complaint issue occured `Street`: The street where the
-complaint issue occured `Apartment_number`: The apartment number where
-the complaint issue occured `City_state`: The city where the complaint
-issue occured `Incident_date`: The date when the complaint issue occured
-`Incident_time`: The time that the complaint issue occurred
-`Complaint_date`: The date the complaint was made `Closed_date`: The
-date the complaint was closed
+Which beat the the complaint issue occurred `Location_code`: The
+location code of where the complaint issue occurred `Address_number`:
+The address number where the complaint issue occurred `Street`: The
+street where the complaint issue occurred `Apartment_number`: The
+apartment number where the complaint issue occurred `City_state`: The
+city where the complaint issue occurred `Incident_date`: The date when
+the complaint issue occurred `Incident_time`: The time that the
+complaint issue occurred `Complaint_date`: The date the complaint was
+made `Closed_date`: The date the complaint was closed
 
 active-duty-only `Last_nme`: Last name of officer `First_nme`: First
 name of officer `Employee_position`: Position of officer
