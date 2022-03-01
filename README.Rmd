@@ -65,6 +65,8 @@ complainants <- read_csv("data/complaints-complainants_2000-2016_2016-11 (1).csv
 #What complaints were made (more categorical data)
 complaints_made <- read_csv("data/complaints-complaints_2000-2016_2016-11 (1).csv")
 
+units <- read.csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/current_and_past_units/Current_and_Past_CPD_Units_2016-05-06.csv")
+
 glimpse(district_demographics)
 glimpse(active_duty_officers)
 glimpse(complaints_made)
