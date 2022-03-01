@@ -79,73 +79,73 @@ District_demographics:
 `Latino`: The Latino population in the district
 `White`: The white population in the district
 `Black`: The Black population in the district
-Native_American: The Native American population in the district
-Asian: The Asian population in the district
-Other: The number of people in a district where race is not recorded or does not fall into the above categories
-Latino%: The percent of Latino people in a district
-White%: The percent of White people in a district
-Black%: The percent of Black people in a district
-Native_American%: The percent of Native American people in a district
-Asian%: The percent of Asian people in a district
-Other%: The percent of people in a district where race is not recorded or does not fall into the above categories
-Majority: What the racial majority in a district is
+`Native_American`: The Native American population in the district
+`Asian`: The Asian population in the district
+`Other`: The number of people in a district where race is not recorded or does not fall into the above categories
+`Latino%`: The percent of Latino people in a district
+`White%`: The percent of White people in a district
+`Black%`: The percent of Black people in a district
+`Native_American%`: The percent of Native American people in a district
+`Asian%`: The percent of Asian people in a district
+`Other%`: The percent of people in a district where race is not recorded or does not fall into the above categories
+`Majority`: What the racial majority in a district is
 
 Complaints-accused
-Row_id: The row number
-Cr_id: Individual identification number for each complaint
-Birth_year: Birth year of officer
-Gender: Gender of officer
-Race: Race of officer
-Appointed_date: Date the officer was appointed
-Curent_unit: Current unit of officer
-Current_rank: Current rank of officer
-Current_star: The star number of the officer accused
-Complaint_category: The category of the complaint against the officer
-Recommend_finding: The recommended findings following an investigation of the complaint. Possible outcomes are unfounded (UN), exonerated (EX), not sustained (NS) and Sustained (SU).
-Recommended_discipline: The recommended disciplinary action taken against the officer
-Final_finding: The final findings following an investigation of the complaint. Possible outcomes are unfounded (UN), exonerated (EX), not sustained (NS) and Sustained (SU).
-Final_discipline: The actual disciplinary action taken against the officer
-First_name: First name of officer
-first _name_NS: First name of officer
-Full_name: Full name of officer
-Last_name: Last name of officer
-last_name_NS: Last name of officer
-Middle_initial: Middle initial of officer
-Middle_initial2: Second middle initial of officer
-Suffix_name: Suffix of officer
+`Row_id`: The row number
+`Cr_id`: Individual identification number for each complaint
+`Birth_year`: Birth year of officer
+`Gender`: Gender of officer
+`Race`: Race of officer
+`Appointed_date`: Date the officer was appointed
+`Curent_unit`: Current unit of officer
+`Current_rank`: Current rank of officer
+`Current_star`: The star number of the officer accused
+`Complaint_category`: The category of the complaint against the officer
+`Recommend_finding`: The recommended findings following an investigation of the complaint. Possible outcomes are unfounded (UN), exonerated (EX), not sustained (NS) and Sustained (SU).
+`Recommended_discipline`: The recommended disciplinary action taken against the officer
+`Final_finding`: The final findings following an investigation of the complaint. Possible outcomes are unfounded (UN), exonerated (EX), not sustained (NS) and Sustained (SU).
+`Final_discipline`: The actual disciplinary action taken against the officer
+`First_name`: First name of officer
+`first _name_NS`: First name of officer
+`Full_name`: Full name of officer
+`Last_name`: Last name of officer
+`last_name_NS`: Last name of officer
+`Middle_initial`: Middle initial of officer
+`Middle_initial2`: Second middle initial of officer
+`Suffix_name`: Suffix of officer
 
 Complaints-complainants
-Gender: Gender of complainant
-Age: Age of complainant
-Race: Race of complainant
+`Gender`: Gender of complainant
+`Age`: Age of complainant
+`Race`: Race of complainant
 
 Complaints-complaints_2000-2016_2016-11
-Row_id: The row number
-Cr_id: Individual identification number for each complaint
-Beat: Which beat the the complaint issue occured
-Location_code: The location code of where the complaint issue occured
-Address_number: The address number where the complaint issue occured
-Street: The street where the complaint issue occured
-Apartment_number: The apartment number where the complaint issue occured
-City_state: The city where the complaint issue occured
-Incident_date: The date when the complaint issue occured
-Incident_time: The time that the complaint issue occurred 
-Complaint_date: The date the complaint was made
-Closed_date: The date the complaint was closed
+`Row_id`: The row number
+`Cr_id`: Individual identification number for each complaint
+`Beat`: Which beat the the complaint issue occured
+`Location_code`: The location code of where the complaint issue occured
+`Address_number`: The address number where the complaint issue occured
+`Street`: The street where the complaint issue occured
+`Apartment_number`: The apartment number where the complaint issue occured
+`City_state`: The city where the complaint issue occured
+`Incident_date`: The date when the complaint issue occured
+`Incident_time`: The time that the complaint issue occurred 
+`Complaint_date`: The date the complaint was made
+`Closed_date`: The date the complaint was closed
 
 active-duty-only
-Last_nme: Last name of officer
-First_nme: First name of officer
-Employee_position: Position of officer
-Cpd_unit_assigned_no: CPD unit number of officer
-Unit_assigned_no: Number of the unit the officer was assigned to
-Units_Desc: District of officer
-Age: Age of officer
-Appointed_date: Date officer was appointed
-Sex_code_cd: Sex of officer
-Race: Race of officer
-Star_no: The star number of the police officer
-sworn_officer_I: Whether officer is a sworn officer or not
+`Last_nme`: Last name of officer
+`First_nme`: First name of officer
+`Employee_position`: Position of officer
+`Cpd_unit_assigned_no`: CPD unit number of officer
+`Unit_assigned_no`: Number of the unit the officer was assigned to
+`Units_Desc`: District of officer
+`Age`: Age of officer
+`Appointed_date`: Date officer was appointed
+`Sex_code_cd`: Sex of officer
+`Race`: Race of officer
+`Star_no`: The star number of the police officer
+`sworn_officer_I`: Whether officer is a sworn officer or not
 
 
 ## Presentation
