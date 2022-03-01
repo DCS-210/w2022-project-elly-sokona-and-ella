@@ -283,6 +283,13 @@ active-duty-only:
 -   `Star_no`: The star number of the police officer
 -   `sworn_officer_I`: Whether officer is a sworn officer or not
 
+units:
+
+-   `Unit.No.`: Individual Unit Number
+-   `Unit.Description`: The area description – physical, operational, or
+    both – of the unit
+-   `Status`: Binary variable noting whether the unit is active \[y/n\]
+
 ## Presentation
 
 Understanding our main questions –
