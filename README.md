@@ -1,6 +1,7 @@
-Elly, Sokona and Ella
+Understanding the Relationship Between Neighborhood Demographics and
+Allegations of Police Misconduct in Chicago
 ================
-by Team name
+Sokona, Ella, and Elly
 
 ## Summary
 
@@ -187,89 +188,122 @@ your project.
 
 Below is the Codebook for our datasets
 
-Codebook:
+District_demographics:
 
-District_demographics: `District_No`: District number `District_Name`:
-The name of the district `Population`: The number of people in each
-district `Latino`: The Latino population in the district `White`: The
-white population in the district `Black`: The Black population in the
-district `Native_American`: The Native American population in the
-district `Asian`: The Asian population in the district `Other`: The
-number of people in a district where race is not recorded or does not
-fall into the above categories `Latino%`: The percent of Latino people
-in a district `White%`: The percent of White people in a district
-`Black%`: The percent of Black people in a district `Native_American%`:
-The percent of Native American people in a district `Asian%`: The
-percent of Asian people in a district `Other%`: The percent of people in
-a district where race is not recorded or does not fall into the above
-categories `Majority`: What the racial majority in a district is
+-   `District_No`: District number
+-   `District_Name`: The name of the district
+-   `Population`: The number of people in each district
+-   `Latino`: The Latino population in the district
+-   `White`: The white population in the district
+-   `Black`: The Black population in the district
+-   `Native_American`: The Native American population in the district
+-   `Asian`: The Asian population in the district
+-   `Other`: The number of people in a district where race is not
+    recorded or does not fall into the above categories
+-   `Latino%`: The percent of Latino people in a district
+-   `White%`: The percent of White people in a district
+-   `Black%`: The percent of Black people in a district
+-   `Native_American%`: The percent of Native American people in a
+    district
+-   `Asian%`: The percent of Asian people in a district
+-   `Other%`: The percent of people in a district where race is not
+    recorded or does not fall into the above categories
+-   `Majority`: What the racial majority in a district is
 
-Complaints-accused `Row_id`: The row number `Cr_id`: Individual
-identification number for each complaint `Birth_year`: Birth year of
-officer `Gender`: Gender of officer `Race`: Race of officer
-`Appointed_date`: Date the officer was appointed `Curent_unit`: Current
-unit of officer `Current_rank`: Current rank of officer `Current_star`:
-The star number of the officer accused `Complaint_category`: The
-category of the complaint against the officer `Recommend_finding`: The
-recommended findings following an investigation of the complaint.
-Possible outcomes are unfounded (UN), exonerated (EX), not sustained
-(NS) and Sustained (SU). `Recommended_discipline`: The recommended
-disciplinary action taken against the officer `Final_finding`: The final
-findings following an investigation of the complaint. Possible outcomes
-are unfounded (UN), exonerated (EX), not sustained (NS) and Sustained
-(SU). `Final_discipline`: The actual disciplinary action taken against
-the officer `First_name`: First name of officer `first _name_NS`: First
-name of officer `Full_name`: Full name of officer `Last_name`: Last name
-of officer `last_name_NS`: Last name of officer `Middle_initial`: Middle
-initial of officer `Middle_initial2`: Second middle initial of officer
-`Suffix_name`: Suffix of officer
+Complaints-accused
 
-Complaints-complainants `Gender`: Gender of complainant `Age`: Age of
-complainant `Race`: Race of complainant
+-   `Row_id`: The row number
+-   `Cr_id`: Individual identification number for each complaint
+-   `Birth_year`: Birth year of officer
+-   `Gender`: Gender of officer
+-   `Race`: Race of officer
+-   `Appointed_date`: Date the officer was appointed
+-   `Curent_unit`: Current unit of officer
+-   `Current_rank`: Current rank of officer
+-   `Current_star`: The star number of the officer accused
+-   `Complaint_category`: The category of the complaint against the
+    officer
+-   `Recommend_finding`: The recommended findings following an
+    investigation of the complaint. Possible outcomes are unfounded
+    (UN), exonerated (EX), not sustained (NS) and Sustained (SU).
+-   `Recommended_discipline`: The recommended disciplinary action taken
+    against the officer
+-   `Final_finding`: The final findings following an investigation of
+    the complaint. Possible outcomes are unfounded (UN), exonerated
+    (EX), not sustained (NS) and Sustained (SU).
+-   `Final_discipline`: The actual disciplinary action taken against the
+    officer
+-   `First_name`: First name of officer
+-   `first _name_NS`: First name of officer
+-   `Full_name`: Full name of officer
+-   `Last_name`: Last name of officer
+-   `last_name_NS`: Last name of officer
+-   `Middle_initial`: Middle initial of officer
+-   `Middle_initial2`: Second middle initial of officer
+-   `Suffix_name`: Suffix of officer
 
-Complaints-complaints_2000-2016_2016-11 `Row_id`: The row number
-`Cr_id`: Individual identification number for each complaint `Beat`:
-Which beat the the complaint issue occurred `Location_code`: The
-location code of where the complaint issue occurred `Address_number`:
-The address number where the complaint issue occurred `Street`: The
-street where the complaint issue occurred `Apartment_number`: The
-apartment number where the complaint issue occurred `City_state`: The
-city where the complaint issue occurred `Incident_date`: The date when
-the complaint issue occurred `Incident_time`: The time that the
-complaint issue occurred `Complaint_date`: The date the complaint was
-made `Closed_date`: The date the complaint was closed
+Complaints-complainants
 
-active-duty-only `Last_nme`: Last name of officer `First_nme`: First
-name of officer `Employee_position`: Position of officer
-`Cpd_unit_assigned_no`: CPD unit number of officer `Unit_assigned_no`:
-Number of the unit the officer was assigned to `Units_Desc`: District of
-officer `Age`: Age of officer `Appointed_date`: Date officer was
-appointed `Sex_code_cd`: Sex of officer `Race`: Race of officer
-`Star_no`: The star number of the police officer `sworn_officer_I`:
-Whether officer is a sworn officer or not
+-   `Gender`: Gender of complainant
+-   `Age`: Age of complainant
+-   `Race`: Race of complainant
+
+Complaints-complaints_2000-2016_2016-11
+
+-   `Row_id`: The row number
+-   `Cr_id`: Individual identification number for each complaint
+-   `Beat`: Which beat the the complaint issue occurred
+-   `Location_code`: The location code of where the complaint issue
+    occurred
+-   `Address_number`: The address number where the complaint issue
+    occurred
+-   `Street`: The street where the complaint issue occurred
+-   `Apartment_number`: The apartment number where the complaint issue
+    occurred
+-   `City_state`: The city where the complaint issue occurred
+-   `Incident_date`: The date when the complaint issue occurred
+-   `Incident_time`: The time that the complaint issue occurred
+-   `Complaint_date`: The date the complaint was made
+-   `Closed_date`: The date the complaint was closed
+
+active-duty-only:
+
+-   `Last_nme`: Last name of officer
+-   `First_nme`: First name of officer
+-   `Employee_position`: Position of officer
+-   `Cpd_unit_assigned_no`: CPD unit number of officer
+-   `Unit_assigned_no`: Number of the unit the officer was assigned to
+-   `Units_Desc`: District of officer
+-   `Age`: Age of officer
+-   `Appointed_date`: Date officer was appointed
+-   `Sex_code_cd`: Sex of officer
+-   `Race`: Race of officer
+-   `Star_no`: The star number of the police officer
+-   `sworn_officer_I`: Whether officer is a sworn officer or not
 
 ## Presentation
 
-Hypothesis: We will see more complaints from Black residents, regardless
-of the racial makeup of the neighborhood. We expect to see more
-allegations per capita in neighborhoods with higher proportions of Black
-residents.
+Understanding our main questions –
 
 Is there a correlation between the racial majority of the neighborhood
-and the number of allegations against police officers? Outcome – number
-of allegations against officers Predictor – neighborhood’s racial
-demographics (likely percentage of one racial group) Statistical methods
-– calculating correlation coefficient Ways to display this data –
-geom(point)
+and the number of allegations against police officers?
+
+-   Outcome – number of allegations against officers
+-   Predictor – neighborhood’s racial demographics (likely percentage of
+    one racial group)
+-   Statistical methods – calculating correlation coefficient
+-   Ways to display this data – geom(point)
 
 Is there a correlation between the racial majority of the neighborhood
-and how likely the allegation is to be disciplined? Outcome – Proportion
-of allegations disciplined Predictor – neighborhood’s racial
-demographics (likely percentage of one racial group) Statistical methods
-– determine proportion of each complaints resulting in discipline or
-finding of fault in each neighborhood
+and how likely the allegation is to be disciplined?
 
-I calculated the average age and the number of proportions of
+-   Outcome – Proportion of allegations disciplined
+-   Predictor – neighborhood’s racial demographics (likely percentage of
+    one racial group)
+-   Statistical methods – determine proportion of each complaints
+    resulting in discipline or finding of fault in each neighborhood
+
+We calculated the average age and the number of proportions of
 complainants by race and gender. Even without the proportion calculated
 and looking at the frequency for each group, we can see that there’s a
 large amount of complainants coming from Black male and female
@@ -278,9 +312,17 @@ residents.
 According to the US Census Bureau QuickFacts, found here:
 \[<https://www.census.gov/quickfacts/chicagocityillinois>\] Chicago is
 33.3% white, 29.6% Black, 28.8% Hispanic or Latino, 0.3% American Indian
-and Alaskan Native, 6.6% Asian, and 2.8% multiracial. The above summary
-statistics show a disproportionately high number of complaints from
-Black Chicagoans.
+and Alaskan Native, 6.6% Asian, and 2.8% multiracial.
+
+The summary statistics below show a disproportionately high number of
+complaints from Black Chicagoans. ALthough about 30 percent of the
+population, Black Chicagoians make up 60 percent of the complaintants
+filing complaints of policy misconduct.
+
+Hypothesis: We will see more complaints from Black residents, regardless
+of the racial makeup of the neighborhood. We expect to see more
+allegations per capita in neighborhoods with higher proportions of Black
+residents.
 
 ``` r
 #calculating total for the proportions 
@@ -289,7 +331,9 @@ total <- complainants %>%
 
 complainants %>%
   group_by(race, gender) %>%
-  summarise(mean = mean(age, na.rm = TRUE), n_1 = n(), prop = n_1/total)
+  summarise(mean = mean(age, na.rm = TRUE), 
+            n_1 = n(), 
+            prop = n_1/total)
 ```
 
     ## `summarise()` has grouped output by 'race'. You can override using the `.groups` argument.
