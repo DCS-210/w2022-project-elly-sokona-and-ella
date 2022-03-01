@@ -29,7 +29,9 @@ likely to be sustained? Overruled? Does the race of the
 officer/complainant impact how likely a complaint is to be disciplined?
 Does the rank/time as an officer impact how likely the officer is
 disciplined? Does the rank/time as an officer impact how likely the
-officer has more complaints against them?
+officer has more complaints against them? How do the number of
+complaints vary over the course of the year? What complaint data is
+missing and what neighborhoods/other demographics is it missing from?
 
 Introducing our data:
 
