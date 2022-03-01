@@ -150,7 +150,6 @@ active-duty-only
 
 ## Presentation
 
-
 Hypothesis: We will see more complaints from Black residents, regardless of the racial makeup of the neighborhood.  We expect to see more allegations per capita in neighborhoods with higher proportions of Black residents.
 
 Is there a correlation between the racial majority of the neighborhood and the number of allegations against police officers? 
@@ -164,8 +163,10 @@ Outcome – Proportion of allegations disciplined
 Predictor – neighborhood’s racial demographics (likely percentage of one racial group)
 Statistical methods – determine proportion of each complaints resulting in discipline or finding of fault in each neighborhood
 
-
 I calculated the average age and the number of proportions of complainants by race and gender. Even without the proportion calculated and looking at the frequency for each group, we can see that there's a large amount of complainants coming from Black male and female residents. 
+
+According to the US Census Bureau QuickFacts, found here: [https://www.census.gov/quickfacts/chicagocityillinois] Chicago is 33.3% white, 29.6% Black, 28.8% Hispanic or Latino, 0.3% American Indian and Alaskan Native, 6.6% Asian, and 2.8% multiracial. The above summary statistics show a disproportionately high number of complaints from Black Chicagoans.
+
 
 ```{r}
 

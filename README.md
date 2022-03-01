@@ -275,6 +275,13 @@ and looking at the frequency for each group, we can see that there’s a
 large amount of complainants coming from Black male and female
 residents.
 
+According to the US Census Bureau QuickFacts, found here:
+\[<https://www.census.gov/quickfacts/chicagocityillinois>\] Chicago is
+33.3% white, 29.6% Black, 28.8% Hispanic or Latino, 0.3% American Indian
+and Alaskan Native, 6.6% Asian, and 2.8% multiracial. The above summary
+statistics show a disproportionately high number of complaints from
+Black Chicagoans.
+
 ``` r
 #calculating total for the proportions 
 total <- complainants %>%
