@@ -1,6 +1,6 @@
 
 
-```{r load-data, echo = FALSE}
+```{r load-data, echo = FALSE} 
 library(readr)
 library(tidyverse)
 
