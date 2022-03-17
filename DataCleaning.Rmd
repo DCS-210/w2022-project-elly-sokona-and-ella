@@ -1,0 +1,49 @@
+
+
+```{r load-data, echo = FALSE}
+library(readr)
+library(tidyverse)
+
+district_demographics <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/district_demographics/Districts.csv")
+
+active_duty_officers <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/CPD%20Employees%20active-duty-only.csv")
+
+#The officers accused
+complaints_accused <- read_csv("data/complaints-accused_2000-2016_2016-11.csv")
+
+#those who made the complaints
+complainants <- read_csv("data/complaints-complainants_2000-2016_2016-11 (1).csv")
+
+#What complaints were made (more categorical data)
+complaints_made <- read_csv("data/complaints-complaints_2000-2016_2016-11 (1).csv")
+
+units <- read.csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/current_and_past_units/Current_and_Past_CPD_Units_2016-05-06.csv")
+```
+
+
+```{r data-joins}
+district_complaints <- complaints_accused %>%
+  filter(current_unit %in% 1:25) %>%
+  group_by(current_unit) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+
+total_district_complaints <- full_join(district_complaints,
+                                       district_demographics,
+                                       by = c("current_unit" = "District_No")) %>%
+  mutate(complaints_per_capita = n/Population)
+
+ggplot(data = total_district_complaints,
+       mapping = aes(x = District_Name,
+                     y = complaints_per_capita,
+                     color = Majority)) +
+  geom_point() +
+  coord_flip()
+```
+
+ggplot(data = total_district_complaints,
+       mapping = aes(x = District_Name,
+                     y = n,
+                     color = Majority)) +
+  geom_point() +
+  coord_flip()
