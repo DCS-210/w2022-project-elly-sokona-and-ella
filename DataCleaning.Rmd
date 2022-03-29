@@ -3,6 +3,7 @@
 ```{r load-data, echo = FALSE} 
 library(readr)
 library(tidyverse)
+library(forcats)
 
 district_demographics <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/district_demographics/Districts.csv")
 
@@ -35,15 +36,17 @@ total_district_complaints <- full_join(district_complaints,
 
 total_district_complaints %>%
   arrange(desc(complaints_per_capita)) %>%
-  ggplot(data = total_district_complaints,
-       mapping = aes(x = District_Name,
-                     y = complaints_per_capita,
-                     color = Majority)) +
-  geom_point() +
-  coord_flip()
+  factor(total_district_complaints$District_Name) %>%
+  ggplot(data = total_district_complaints, mapping = aes(x = District_Name,
+                       y = order(total_district_complaints$complaints_per_capita), 
+                       color = Majority)) + geom_point() +
+    coord_flip()
+  
 
 
 #forcats package, reorder() function, look at forcat cheestsheet, fct_reorder
+
+
 ```
 
 ggplot(data = total_district_complaints,
@@ -52,6 +55,64 @@ ggplot(data = total_district_complaints,
                      color = Majority)) +
   geom_point() +
   coord_flip()
+  
+```{r}
+district_complaints_1 <- complaints_accused %>%
+  filter(current_unit %in% 1:25) %>%
+  group_by(current_unit)
+
+  #summarise(n = n()) %>%
+  #arrange(desc(n))
+
+total_district_complaints_findings <- full_join(district_complaints_1,
+                                       district_demographics,
+                                       by = c("current_unit" = "District_No"))
+
+
+#stat = "identity"
+
+
+#FIX ERROR, CHECK IF FINAL FINDING IS A CHARACTER
+data1 <- total_district_complaints_findings %>%
+  group_by(final_finding, District_Name) %>%
+  summarize(n = n()) %>%
+  mutate(final_decision = case_when(
+    final_finding == "DIS" ~ "Sustained",
+    final_finding == "SU" ~ "Sustained",
+    final_finding == NA ~ "Missing", 
+    data1 ~ TRUE
+  ))
+
+
+ #reorder disciplined and sustained findings vs those who didn't make the next stage (case_when)
+ 
+
+
+
+ ggplot(data = data1,  aes(fill = final_finding,
+             x = District_Name,
+             y = n)
+         ) +
+  geom_bar(position = "fill", stat = "identity") +
+   theme_minimal() +
+  scale_fill_viridis_d() +
+  coord_flip() 
+ 
+ # labs(title = "Proportion of Employment Status and Major Catagory",
+  #     subtitle = "For Recent Graduates",
+   #    x = "Major Catagory",
+    #   y = "Proportion",
+     #  fill = "Employment Status"
+      # ) +
+  
+
+
+ 
+ 
+
+```
+  
+  
   
 ```{r}
 library(leaflet)
@@ -83,6 +144,12 @@ m
 
 
 #download boundary map of chicago as shapefile, and upload the file, (as a zip)
+```
+  
+  
+  
+```{r}
+library()
 ```
   
   
