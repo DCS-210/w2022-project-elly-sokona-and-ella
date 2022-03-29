@@ -33,12 +33,17 @@ total_district_complaints <- full_join(district_complaints,
                                        by = c("current_unit" = "District_No")) %>%
   mutate(complaints_per_capita = n/Population)
 
-ggplot(data = total_district_complaints,
+total_district_complaints %>%
+  arrange(desc(complaints_per_capita)) %>%
+  ggplot(data = total_district_complaints,
        mapping = aes(x = District_Name,
                      y = complaints_per_capita,
                      color = Majority)) +
   geom_point() +
   coord_flip()
+
+
+#forcats package, reorder() function, look at forcat cheestsheet, fct_reorder
 ```
 
 ggplot(data = total_district_complaints,
@@ -47,3 +52,37 @@ ggplot(data = total_district_complaints,
                      color = Majority)) +
   geom_point() +
   coord_flip()
+  
+```{r}
+library(leaflet)
+library(dplyr)
+
+ #Insert your latitude and longitude in the code below
+# NOTE: Don't get them reversed otherwise you'll end up in the South Pole.
+
+# Initialize and assign m as the leaflet object
+m <- leaflet() %>%
+# Now add tiles to it
+ addTiles() %>%
+# Setting the middle of where the map should be and the zoom level
+  setView(-87.633506, 41.876067, zoom = 13)
+# Now, add a marker with a popup, 
+    #addMarkers(lng=41.793278, lat=-87.732528)
+
+#41.793278, -87.732528
+m
+
+
+#x <- leaflet() %>%
+ # addTiles() %>%
+  #setView(lng = 41.854627, lat = -87.617837, zoom = 5)
+
+#mymap <- m %>%   
+ # addTiles('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg', attribution = 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>') %>% setView(-87.732528, 41.793278, zoom = 4)
+  
+
+
+#download boundary map of chicago as shapefile, and upload the file, (as a zip)
+```
+  
+  
