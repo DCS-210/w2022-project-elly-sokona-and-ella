@@ -56,9 +56,14 @@ ggplot(data = total_district_complaints,
   geom_point() +
   coord_flip()
   
+  
+```{r}
+skimr::skim(complaints_accused)
+```
+  
 ```{r}
 district_complaints_1 <- complaints_accused %>%
-  filter(current_unit %in% 1:25) %>%
+  filter(current_unit %in% 1:25, !final_finding == "NC") %>%
   group_by(current_unit)
 
   #summarise(n = n()) %>%
@@ -75,18 +80,18 @@ total_district_complaints_findings <- full_join(district_complaints_1,
 #FIX ERROR, CHECK IF FINAL FINDING IS A CHARACTER
 data1 <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name) %>%
-  summarize(n = n()) %>%
-  mutate(final_decision = case_when(
-    final_finding == "DIS" ~ "Sustained",
-    final_finding == "SU" ~ "Sustained",
-    final_finding == NA ~ "Missing", 
-    data1 ~ TRUE
-  ))
+  summarize(n = n()) 
+  #mutate(final_decision = case_when(
+  #final_finding == "SU" ~ "Sustained",
+  #final_finding == "NA" ~ "Missing", 
+  #TRUE ~ data1
+  #))
 
 
  #reorder disciplined and sustained findings vs those who didn't make the next stage (case_when)
  
-
+#NAF = NO AFFIVADIT
+#NC = NO COOPERATION
 
 
  ggplot(data = data1,  aes(fill = final_finding,
@@ -112,6 +117,15 @@ data1 <- total_district_complaints_findings %>%
 
 ```
   
+  
+  
+  
+```{r}
+data1 <- total_district_complaints_findings %>%
+  group_by(final_finding, District_Name) %>%
+  summarize(n = n()) %>%
+  mutate(final_decision = case_when(final_finding == "DIS" ~ "Sustained"))
+```
   
   
 ```{r}
