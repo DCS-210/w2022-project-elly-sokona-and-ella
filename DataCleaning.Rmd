@@ -63,7 +63,7 @@ skimr::skim(complaints_accused)
   
 ```{r}
 district_complaints_1 <- complaints_accused %>%
-  filter(current_unit %in% 1:25, !final_finding == "NC") %>%
+  filter(current_unit %in% 1:25) %>%
   group_by(current_unit)
 
   #summarise(n = n()) %>%
@@ -80,12 +80,10 @@ total_district_complaints_findings <- full_join(district_complaints_1,
 #FIX ERROR, CHECK IF FINAL FINDING IS A CHARACTER
 data1 <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name) %>%
-  summarize(n = n()) 
-  #mutate(final_decision = case_when(
-  #final_finding == "SU" ~ "Sustained",
-  #final_finding == "NA" ~ "Missing", 
-  #TRUE ~ data1
-  #))
+  summarize(n = n()) %>%
+  mutate(final_decision = case_when(
+    final_finding %in% "SU" ~ "Sustained",
+    final_finding %in% "NA" ~ "Missing"))
 
 
  #reorder disciplined and sustained findings vs those who didn't make the next stage (case_when)
@@ -94,21 +92,20 @@ data1 <- total_district_complaints_findings %>%
 #NC = NO COOPERATION
 
 
- ggplot(data = data1,  aes(fill = final_finding,
+ ggplot(data = data1,  aes(fill = final_decision,
              x = District_Name,
              y = n)
          ) +
   geom_bar(position = "fill", stat = "identity") +
    theme_minimal() +
   scale_fill_viridis_d() +
-  coord_flip() 
- 
- # labs(title = "Proportion of Employment Status and Major Catagory",
-  #     subtitle = "For Recent Graduates",
-   #    x = "Major Catagory",
-    #   y = "Proportion",
-     #  fill = "Employment Status"
-      # ) +
+  coord_flip() +
+   labs(title = "Proportion of Final Findings",
+        subtitle = "By Neighborhood",
+        x = "Proportion of Complaints",
+        y = "District Name"
+        )
+  
   
 
 
