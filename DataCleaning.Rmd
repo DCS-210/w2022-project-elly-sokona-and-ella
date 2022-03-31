@@ -83,7 +83,14 @@ data1 <- total_district_complaints_findings %>%
   summarize(n = n()) %>%
   mutate(final_decision = case_when(
     final_finding %in% "SU" ~ "Sustained",
-    final_finding %in% "NA" ~ "Missing"))
+    final_finding %in% "DIS" ~ "Sustained",
+    final_finding == NA ~ "Missing",
+    final_finding %in% "NAF" ~ "No Affidavit or Coorperation",
+    final_finding %in% "NC" ~ "No Affidavit or Coorperation",
+    final_finding %in% "NS" ~ "Not Sustained",
+    final_finding %in% "EX" ~ "Not Sustained",
+    final_finding %in% "UN" ~ "Not Sustained")
+  )
 
 
  #reorder disciplined and sustained findings vs those who didn't make the next stage (case_when)
@@ -104,7 +111,8 @@ data1 <- total_district_complaints_findings %>%
         subtitle = "By Neighborhood",
         x = "Proportion of Complaints",
         y = "District Name"
-        )
+        ) + 
+   scale_fill_manual(labels = c("No Affidavit or Coorperation","Not Sustained","Sustained","Missing"), values = c("#f1eef6", "#d7b5d8", "#df65b0", "#ce1256"))
   
   
 
@@ -154,7 +162,9 @@ m
   
 
 
-#download boundary map of chicago as shapefile, and upload the file, (as a zip)
+#download boundary map of chicago as shapefile (Chicago data portal), and upload the file, (as a zip)
+
+###https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Neighborhoods/bbvz-uum9
 ```
   
   
