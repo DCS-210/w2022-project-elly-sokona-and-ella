@@ -35,19 +35,24 @@ total_district_complaints <- full_join(district_complaints,
   mutate(complaints_per_capita = n/Population)
 
 total_district_complaints %>%
-  arrange(desc(complaints_per_capita)) %>%
-  factor(total_district_complaints$District_Name) %>%
-  ggplot(data = total_district_complaints, mapping = aes(x = District_Name,
-                       y = order(total_district_complaints$complaints_per_capita), 
-                       color = Majority)) + geom_point() +
-    coord_flip()
-  
+  arrange(desc(complaints_per_capita)) %>%  
+         ggplot(data = total_district_complaints, 
+                mapping = aes(
+                  x = fct_reorder(District_Name, complaints_per_capita),
+                  y = complaints_per_capita, 
+                color = Majority)) +
+  geom_point() +
+  coord_flip() +
+  labs(title = "Complaints per Capita by District Name",
+       subtitle = "Colored by Racial Majority",
+       x = "District Name",
+       y = "Complaints Per Capita")
+```
 
-
-#forcats package, reorder() function, look at forcat cheestsheet, fct_reorder
-
+```{r}
 
 ```
+
 
 ggplot(data = total_district_complaints,
        mapping = aes(x = District_Name,
