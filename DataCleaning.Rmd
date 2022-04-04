@@ -4,6 +4,8 @@
 library(readr)
 library(tidyverse)
 library(forcats)
+library(kableExtra)
+library(sf)
 
 district_demographics <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/district_demographics/Districts.csv")
 
@@ -131,16 +133,34 @@ data1 <- total_district_complaints_findings %>%
   
   
 ```{r}
-data1 <- total_district_complaints_findings %>%
-  group_by(final_finding, District_Name) %>%
-  summarize(n = n()) %>%
-  mutate(final_decision = case_when(final_finding == "DIS" ~ "Sustained"))
+#data1 <- total_district_complaints_findings %>%
+ # group_by(final_finding, District_Name) %>%
+  #summarize(n = n()) %>%
+  #mutate(final_decision = case_when(final_finding == "DIS" ~ "Sustained"))
+```
+  
+  
+```{r chicago spatial data}
+
+#no 21 or 23 district but 31st district included?
+chicago_police_district_spatial <- st_read(dsn = "/cloud/project/data/geo_export_2efb16ec-aa66-49b0-92a0-2d6f5e0f81d9.shp")
+
+map_dbl(chicago_police_district_spatial$dist_num,as.numeric)
+
+
+total_district_complaints_spatial <- full_join(total_district_complaints_findings,
+                                       chicago_police_district_spatial,
+                                       by = c("current_unit" = "dist_num")) %>%
+  st_as_sf()
+
 ```
   
   
 ```{r}
 library(leaflet)
 library(dplyr)
+
+
 
  #Insert your latitude and longitude in the code below
 # NOTE: Don't get them reversed otherwise you'll end up in the South Pole.
