@@ -147,10 +147,34 @@ chicago_police_district_spatial <- st_read(dsn = "/cloud/project/data/geo_export
 
 
 total_district_complaints_spatial <- total_district_complaints %>%
-  mutate(current_unit = as.character(current_unit)) %>%
+  mutate(`Latino%` = str_remove(`Latino%`, "%"),
+         `White%` = str_remove(`White%`, "%"),
+         `Black%` = str_remove(`Black%`, "%"),
+         `Asian%` = str_remove(`Asian%`, "%"),
+         `Native_American%` = str_remove(`Native_American%`, "%"),
+         `Other%` = str_remove(`Other%`, "%"),
+         `Latino%` = as.numeric(`Latino%`),
+         `White%` = as.numeric(`White%`),
+         `Black%` = as.numeric(Black),
+         `Asian%` = as.numeric(`Asian%`),
+         `Native_American%` = as.numeric(`Native_American%`),
+         `Other%` = as.numeric(`Other%`)) %>%
+  mutate(current_unit = as.character(current_unit))%>%
   left_join(chicago_police_district_spatial,
                                     by = c("current_unit" = "dist_num")) %>%
-  st_as_sf()
+  st_as_sf() %>%
+  st_transform("+init=epsg:4326")
+
+#https://laurielbaker.github.io/DSCA_leaflet_mapping_in_r/slides/leaflet_slides3.html#58
+ 
+   m <- leaflet(total_district_complaints_spatial) %>%
+# Now add tiles to it
+ addTiles() %>%
+# Setting the middle of where the map should be and the zoom level
+  setView(-87.633506, 41.876067, zoom = 10) %>%
+  addPolygons()
+
+m
 
 ```
   
@@ -165,16 +189,7 @@ library(dplyr)
 # NOTE: Don't get them reversed otherwise you'll end up in the South Pole.
 
 # Initialize and assign m as the leaflet object
-m <- leaflet() %>%
-# Now add tiles to it
- addTiles() %>%
-# Setting the middle of where the map should be and the zoom level
-  setView(-87.633506, 41.876067, zoom = 13)
-# Now, add a marker with a popup, 
-    #addMarkers(lng=41.793278, lat=-87.732528)
 
-#41.793278, -87.732528
-m
 
 
 #x <- leaflet() %>%
