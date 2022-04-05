@@ -24,7 +24,7 @@ units <- read.csv("https://raw.githubusercontent.com/invinst/chicago-police-data
 ```
 
 
-```{r data-joins}
+```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows "}
 district_complaints <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
   group_by(current_unit) %>%
@@ -145,12 +145,12 @@ data1 <- total_district_complaints_findings %>%
 #no 21 or 23 district but 31st district included?
 chicago_police_district_spatial <- st_read(dsn = "/cloud/project/data/geo_export_2efb16ec-aa66-49b0-92a0-2d6f5e0f81d9.shp")
 
-map_dbl(chicago_police_district_spatial$dist_num,as.numeric)
 
-#total_district_complaints_spatial <- left_join(total_district_complaints_findings,
-                                         #      chicago_police_district_spatial,
-                                        #       by = c("current_unit" = "dist_num")) %>%
-  #st_as_sf()
+total_district_complaints_spatial <- total_district_complaints %>%
+  mutate(current_unit = as.character(current_unit)) %>%
+  left_join(chicago_police_district_spatial,
+                                    by = c("current_unit" = "dist_num")) %>%
+  st_as_sf()
 
 ```
   
