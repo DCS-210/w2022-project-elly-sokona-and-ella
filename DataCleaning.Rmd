@@ -147,11 +147,10 @@ chicago_police_district_spatial <- st_read(dsn = "/cloud/project/data/geo_export
 
 map_dbl(chicago_police_district_spatial$dist_num,as.numeric)
 
-
-total_district_complaints_spatial <- full_join(total_district_complaints_findings,
-                                       chicago_police_district_spatial,
-                                       by = c("current_unit" = "dist_num")) %>%
-  st_as_sf()
+#total_district_complaints_spatial <- left_join(total_district_complaints_findings,
+                                         #      chicago_police_district_spatial,
+                                        #       by = c("current_unit" = "dist_num")) %>%
+  #st_as_sf()
 
 ```
   
