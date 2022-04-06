@@ -6,6 +6,7 @@ library(tidyverse)
 library(forcats)
 library(kableExtra)
 library(sf)
+library(leaflet)
 
 district_demographics <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/district_demographics/Districts.csv")
 
@@ -155,7 +156,7 @@ total_district_complaints_spatial <- total_district_complaints %>%
          `Other%` = str_remove(`Other%`, "%"),
          `Latino%` = as.numeric(`Latino%`),
          `White%` = as.numeric(`White%`),
-         `Black%` = as.numeric(Black),
+         `Black%` = as.numeric(`Black%`),
          `Asian%` = as.numeric(`Asian%`),
          `Native_American%` = as.numeric(`Native_American%`),
          `Other%` = as.numeric(`Other%`)) %>%
@@ -165,14 +166,21 @@ total_district_complaints_spatial <- total_district_complaints %>%
   st_as_sf() %>%
   st_transform("+init=epsg:4326")
 
+bins <- seq(from = 0, to = 100, by = 10)
+pal_perc <- colorBin("OrRd", domain = total_district_complaints_spatial , bins = bins)
 #https://laurielbaker.github.io/DSCA_leaflet_mapping_in_r/slides/leaflet_slides3.html#58
  
-   m <- leaflet(total_district_complaints_spatial) %>%
+m <- leaflet(total_district_complaints_spatial) %>%
 # Now add tiles to it
  addTiles() %>%
 # Setting the middle of where the map should be and the zoom level
   setView(-87.633506, 41.876067, zoom = 10) %>%
-  addPolygons()
+  
+# not currently working, need a color palette with more colors  
+#Black_perc_m <- m %>%
+#  addPolygons(
+#    fillColor = ~ pal_perc(total_district_complaints_spatial$`Black%`)
+#  )
 
 m
 
