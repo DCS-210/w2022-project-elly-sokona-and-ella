@@ -11,6 +11,8 @@ library(forcats)
 library(kableExtra)
 library(sf)
 library(leaflet)
+install.packages("naniar")
+library(naniar)
 
 devtools::install_github("rstudio/leaflet.providers")
 
@@ -101,6 +103,73 @@ data1 <- total_district_complaints_findings %>%
 
 ```
   
+```{r complaints for sustained decisions}
+
+sustained_data <- total_district_complaints_findings %>%
+  group_by(final_finding, District_Name, Majority, Population) %>%
+  filter(final_finding == "SU" | final_finding == "DIS") %>%
+  summarize(n = n()) %>%
+  mutate(complaints_per_capita = n/Population) 
+  
+
+  ggplot(data = sustained_data, 
+                mapping = aes(
+                  x = fct_reorder(District_Name, n),
+                  y = n, 
+                color = Majority)) +
+  geom_point() +
+  coord_flip() +
+  labs(title = " Sustained Complaints per Capita by District Name",
+       subtitle = "Colored by Racial Majority",
+       x = "District Name",
+       y = " Sustained Complaints Per Capita")
+```
+  
+```{r complaints for missing/sustained decisions}
+
+unsustained_data <- total_district_complaints_findings %>%
+  group_by(final_finding, District_Name, Majority, Population) %>%
+  filter(!final_finding == "SU" & !final_finding == "DIS") %>%
+  summarize(n = n()) %>%
+  mutate(complaints_per_capita = n/Population) 
+  
+
+  ggplot(data = unsustained_data, 
+                mapping = aes(
+                  x = fct_reorder(District_Name, n),
+                  y = n, 
+                color = Majority)) +
+  geom_point() +
+  coord_flip() +
+  labs(title = " Unsustained Complaints per Capita by District Name",
+       subtitle = "Colored by Racial Majority",
+       x = "District Name",
+       y = " Unsustained Complaints Per Capita")
+```
+  
+```{r complaints for missing data}
+missing_data <- total_district_complaints_findings %>%
+  group_by(final_finding, District_Name, Majority, Population) %>%
+  filter(is.na(final_finding)) %>%
+  summarize(n = n()) %>%
+  mutate(complaints_per_capita = n/Population) 
+  
+ ggplot(data = missing_data, 
+                mapping = aes(
+                  x = fct_reorder(District_Name, n),
+                  y = n, 
+                color = Majority)) +
+  geom_point() +
+  coord_flip() +
+  labs(title = " Missing Complaints per Capita by District Name",
+       subtitle = "Colored by Racial Majority",
+       x = "District Name",
+       y = " Missing Complaints Per Capita")
+
+
+```
+  
+  
 ```{r chicago spatial data}
 
 #no 21 or 23 district but 31st district included?
@@ -160,11 +229,43 @@ Black_perc_m
 ```
   
 ```{r White-perc-leaflet}
+White_perc_m <- m %>%
+  addPolygons(
+    fillOpacity = 1,
+    color = "black",
+    opacity = 0.7,
+    weight = 1,
+    fillColor = ~pal_perc(total_district_complaints_spatial$`White%`))
+      
+White_perc_m <- White_perc_m %>%
+  addLegend(
+    position = "topright",
+    pal = pal_perc,
+    values = ~total_district_complaints_spatial$`White%`,
+    title = "Percent White residents",
+    opacity = 1)
 
+White_perc_m
 ```
 
 ```{r Latino-perc-leaflet}
+Latino_perc_m <- m %>%
+  addPolygons(
+    fillOpacity = 1,
+    color = "black",
+    opacity = 0.7,
+    weight = 1,
+    fillColor = ~pal_perc(total_district_complaints_spatial$`Latino%`))
+      
+Latino_perc_m <- Latino_perc_m %>%
+  addLegend(
+    position = "topright",
+    pal = pal_perc,
+    values = ~total_district_complaints_spatial$`Latino%`,
+    title = "Percent Latino residents",
+    opacity = 1)
 
+Latino_perc_m
 ```
 
 ```{r missing-perc-leaflet}
