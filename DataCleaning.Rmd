@@ -77,8 +77,8 @@ data1 <- total_district_complaints_findings %>%
     final_finding %in% "SU" ~ "Sustained",
     final_finding %in% "DIS" ~ "Sustained",
     final_finding == NA ~ "Missing",
-    final_finding %in% "NAF" ~ "No Affidavit or Coorperation",
-    final_finding %in% "NC" ~ "No Affidavit or Coorperation",
+    final_finding %in% "NAF" ~ "No Affidavit or Cooperation",
+    final_finding %in% "NC" ~ "No Affidavit or Cooperation",
     final_finding %in% "NS" ~ "Not Sustained",
     final_finding %in% "EX" ~ "Not Sustained",
     final_finding %in% "UN" ~ "Not Sustained")
@@ -97,7 +97,7 @@ data1 <- total_district_complaints_findings %>%
         x = "Proportion of Complaints",
         y = "District Name"
         ) + 
-   scale_fill_manual(labels = c("No Affidavit or Coorperation","Not Sustained","Sustained","Missing"), values = c("#f1eef6", "#d7b5d8", "#df65b0", "#ce1256"))
+   scale_fill_manual(labels = c("No Affidavit or Cooperation","Not Sustained","Sustained","Missing"), values = c("#f1eef6", "#d7b5d8", "#df65b0", "#ce1256"))
 
 ```
   
@@ -168,8 +168,7 @@ Black_perc_m
 ```
 
 ```{r missing-perc-leaflet}
-#NA ~ "Missing",
-#"NAF" ~ "No Affidavit or Coorperation",
-#"NC" ~ "No Affidavit or Coorperation",
+# creating map showing neighborhoods with most missing data ie when the final finding is either NA (missing), NAF (no affidavit) or NC (no affidavit)
 
+  
 ```
