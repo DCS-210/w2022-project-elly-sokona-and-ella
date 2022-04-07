@@ -101,6 +101,30 @@ data1 <- total_district_complaints_findings %>%
 
 ```
   
+```{r complaints for sustained decisions}
+
+sustained_data <- total_district_complaints_findings %>%
+  group_by(final_finding, District_Name, Majority, Population) %>%
+  filter(final_finding == "SU" | final_finding == "DIS") %>%
+  summarize(n = n()) %>%
+  mutate(complaints_per_capita = n/Population) 
+  
+
+  ggplot(data = sustained_data, 
+                mapping = aes(
+                  x = fct_reorder(District_Name, complaints_per_capita),
+                  y = complaints_per_capita, 
+                color = Majority)) +
+  geom_point() +
+  coord_flip() +
+  labs(title = " Sustained Complaints per Capita by District Name",
+       subtitle = "Colored by Racial Majority",
+       x = "District Name",
+       y = " Sustained Complaints Per Capita")
+```
+  
+  
+  
 ```{r chicago spatial data}
 
 #no 21 or 23 district but 31st district included?
