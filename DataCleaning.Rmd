@@ -123,6 +123,38 @@ sustained_data <- total_district_complaints_findings %>%
        y = " Sustained Complaints Per Capita")
 ```
   
+```{r complaints for missing/sustained decisions}
+
+unsustained_data <- total_district_complaints_findings %>%
+  group_by(final_finding, District_Name, Majority, Population) %>%
+  filter(!final_finding == "SU" & !final_finding == "DIS") %>%
+  summarize(n = n()) %>%
+  mutate(complaints_per_capita = n/Population) 
+  
+
+  ggplot(data = unsustained_data, 
+                mapping = aes(
+                  x = fct_reorder(District_Name, complaints_per_capita),
+                  y = complaints_per_capita, 
+                color = Majority)) +
+  geom_point() +
+  coord_flip() +
+  labs(title = " Sustained Complaints per Capita by District Name",
+       subtitle = "Colored by Racial Majority",
+       x = "District Name",
+       y = " Sustained Complaints Per Capita")
+```
+  
+```{r complaints for missing data}
+missing_data <- total_district_complaints_findings %>%
+  group_by(final_finding, District_Name, Majority, Population) %>%
+  filter(final_finding == (is.na = FALSE)) %>%
+  summarize(n = n()) %>%
+  mutate(complaints_per_capita = n/Population) 
+  
+
+
+```
   
   
 ```{r chicago spatial data}
