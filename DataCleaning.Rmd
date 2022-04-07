@@ -144,6 +144,7 @@ data1 <- total_district_complaints_findings %>%
 ```{r chicago spatial data}
 
 #no 21 or 23 district but 31st district included?
+
 chicago_police_district_spatial <- st_read(dsn = "/cloud/project/data/geo_export_2efb16ec-aa66-49b0-92a0-2d6f5e0f81d9.shp")
 
 
@@ -174,7 +175,7 @@ m <- leaflet(total_district_complaints_spatial) %>%
 # Now add tiles to it
  addTiles() %>%
 # Setting the middle of where the map should be and the zoom level
-  setView(-87.633506, 41.876067, zoom = 10) %>%
+  setView(-87.633506, 41.876067, zoom = 10)
   
 # not currently working, need a color palette with more colors  
 #Black_perc_m <- m %>%
@@ -182,7 +183,7 @@ m <- leaflet(total_district_complaints_spatial) %>%
 #    fillColor = ~ pal_perc(total_district_complaints_spatial$`Black%`)
 #  )
 
-m
+
 
 ```
   
