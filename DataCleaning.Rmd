@@ -1,3 +1,7 @@
+---
+title: Visualizations
+output: html_document
+---
 
 
 ```{r load-data, echo = FALSE} 
@@ -8,6 +12,9 @@ library(kableExtra)
 library(sf)
 library(leaflet)
 
+devtools::install_github("rstudio/leaflet.providers")
+
+  
 district_demographics <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/district_demographics/Districts.csv")
 
 active_duty_officers <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/CPD%20Employees%20active-duty-only.csv")
@@ -51,41 +58,18 @@ total_district_complaints %>%
        x = "District Name",
        y = "Complaints Per Capita")
 ```
-
-```{r}
-
-```
-
-
-ggplot(data = total_district_complaints,
-       mapping = aes(x = District_Name,
-                     y = n,
-                     color = Majority)) +
-  geom_point() +
-  coord_flip()
   
-  
-```{r}
-skimr::skim(complaints_accused)
-```
-  
-```{r}
+```{r proportion-findings-vis}
 district_complaints_1 <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
   group_by(current_unit)
-
-  #summarise(n = n()) %>%
-  #arrange(desc(n))
 
 total_district_complaints_findings <- full_join(district_complaints_1,
                                        district_demographics,
                                        by = c("current_unit" = "District_No"))
 
-
 #stat = "identity"
 
-
-#FIX ERROR, CHECK IF FINAL FINDING IS A CHARACTER
 data1 <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name) %>%
   summarize(n = n()) %>%
@@ -99,13 +83,6 @@ data1 <- total_district_complaints_findings %>%
     final_finding %in% "EX" ~ "Not Sustained",
     final_finding %in% "UN" ~ "Not Sustained")
   )
-
-
- #reorder disciplined and sustained findings vs those who didn't make the next stage (case_when)
- 
-#NAF = NO AFFIVADIT
-#NC = NO COOPERATION
-
 
  ggplot(data = data1,  aes(fill = final_decision,
              x = District_Name,
@@ -121,25 +98,8 @@ data1 <- total_district_complaints_findings %>%
         y = "District Name"
         ) + 
    scale_fill_manual(labels = c("No Affidavit or Coorperation","Not Sustained","Sustained","Missing"), values = c("#f1eef6", "#d7b5d8", "#df65b0", "#ce1256"))
-  
-  
-
-
- 
- 
 
 ```
-  
-  
-  
-  
-```{r}
-#data1 <- total_district_complaints_findings %>%
- # group_by(final_finding, District_Name) %>%
-  #summarize(n = n()) %>%
-  #mutate(final_decision = case_when(final_finding == "DIS" ~ "Sustained"))
-```
-  
   
 ```{r chicago spatial data}
 
@@ -167,58 +127,49 @@ total_district_complaints_spatial <- total_district_complaints %>%
   st_as_sf() %>%
   st_transform("+init=epsg:4326")
 
-bins <- seq(from = 0, to = 100, by = 10)
+bins <- seq(from = 0, to = 100, by = 12.5)
 pal_perc <- colorBin("OrRd", domain = total_district_complaints_spatial , bins = bins)
 #https://laurielbaker.github.io/DSCA_leaflet_mapping_in_r/slides/leaflet_slides3.html#58
  
 m <- leaflet(total_district_complaints_spatial) %>%
 # Now add tiles to it
- addTiles() %>%
+  addTiles() %>%
 # Setting the middle of where the map should be and the zoom level
-  setView(-87.633506, 41.876067, zoom = 10)
-  
-# not currently working, need a color palette with more colors  
-#Black_perc_m <- m %>%
-#  addPolygons(
-#    fillColor = ~ pal_perc(total_district_complaints_spatial$`Black%`)
-#  )
-
-
-
+  setView(-87.633506, 41.876067, zoom = 9.5) %>%
+  addProviderTiles(providers$CartoDB.Positron)
 ```
   
-  
-```{r}
-library(leaflet)
-library(dplyr)
+```{r Black-perc-leaflet}
+Black_perc_m <- m %>%
+  addPolygons(
+    fillOpacity = 1,
+    color = "black",
+    opacity = 0.7,
+    weight = 1,
+    fillColor = ~pal_perc(total_district_complaints_spatial$`Black%`))
+      
+Black_perc_m <- Black_perc_m %>%
+  addLegend(
+    position = "topright",
+    pal = pal_perc,
+    values = ~total_district_complaints_spatial$`Black%`,
+    title = "Percent Black residents",
+    opacity = 1)
 
-
-
- #Insert your latitude and longitude in the code below
-# NOTE: Don't get them reversed otherwise you'll end up in the South Pole.
-
-# Initialize and assign m as the leaflet object
-
-
-
-#x <- leaflet() %>%
- # addTiles() %>%
-  #setView(lng = 41.854627, lat = -87.617837, zoom = 5)
-
-#mymap <- m %>%   
- # addTiles('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg', attribution = 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>') %>% setView(-87.732528, 41.793278, zoom = 4)
-  
-
-
-#download boundary map of chicago as shapefile (Chicago data portal), and upload the file, (as a zip)
-
-###https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Neighborhoods/bbvz-uum9
+Black_perc_m
 ```
   
-  
-  
-```{r}
-library()
+```{r White-perc-leaflet}
+
 ```
-  
-  
+
+```{r Latino-perc-leaflet}
+
+```
+
+```{r missing-perc-leaflet}
+#NA ~ "Missing",
+#"NAF" ~ "No Affidavit or Coorperation",
+#"NC" ~ "No Affidavit or Coorperation",
+
+```
