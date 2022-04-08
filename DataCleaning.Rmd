@@ -90,23 +90,23 @@ data1 <- total_district_complaints_findings %>%
   group_by(final_decision, District_Name)  %>%
   summarize(n = n())
 
-#data1 %>%
- # group_by(final_decision) %>%
-  #summarize(n = n())
+data1 %>%
+  group_by(final_decision) %>%
+  summarize(n = n())
 #reorder so that missing is at the end and change colors, take out the NA
- #ggplot(data = data1,  aes(fill = factor(final_decision, levels = c("Not Sustained", "No Affidavit or Cooperation", "Missing", "Sustained")),
-  #           x = fct_relevel(District_Name), district_levels),
-   #          y = n)) +
-  #geom_bar(position = "fill", stat = "identity") +
-   #theme_minimal() +
-  #scale_fill_viridis_d() +
-  #coord_flip() +
-  # labs(title = "Proportion of Final Findings",
-   #     subtitle = "By Neighborhood",
-    #    x = "Proportion of Complaints",
-     #   y = "District Name",
-      #  fill = "Final Decision"
-       # ) 
+ ggplot(data = data1,  aes(fill = factor(final_decision, levels = c("Missing", "Not Sustained", "No Affidavit or Cooperation", "Sustained")),
+                           x = fct_relevel(District_Name), district_levels,
+                           y = n)) +
+  geom_bar(position = "fill", stat = "identity") +
+  theme_minimal() +
+  scale_fill_viridis_d() +
+  coord_flip() +
+   labs(title = "Proportion of Final Findings",
+        subtitle = "By District",
+        x = "District Name",
+        y = "Proportion of Complaints",
+        fill = "Final Decision"
+        ) 
 
 ```
   
