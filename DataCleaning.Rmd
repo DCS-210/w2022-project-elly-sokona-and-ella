@@ -47,13 +47,15 @@ total_district_complaints <- full_join(district_complaints,
   mutate(complaints_per_capita = n/Population)
 
 total_district_complaints %>%
-  arrange(desc(complaints_per_capita)) %>%  
-         ggplot(data = total_district_complaints, 
-                mapping = aes(
+  filter(is.na(District_Name) == FALSE) %>%
+         ggplot(mapping = aes(
                   x = fct_reorder(District_Name, complaints_per_capita),
                   y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
+  geom_segment(aes(x = fct_reorder(District_Name, complaints_per_capita), 
+                   xend = fct_reorder(District_Name, complaints_per_capita), 
+                   y = 0, yend = complaints_per_capita)) +
   coord_flip() +
   labs(title = "Complaints per Capita by District Name",
        subtitle = "Colored by Racial Majority",
@@ -73,33 +75,36 @@ total_district_complaints_findings <- full_join(district_complaints_1,
 #stat = "identity"
 
 data1 <- total_district_complaints_findings %>%
-  group_by(final_finding, District_Name) %>%
-  summarize(n = n()) %>%
-  mutate(final_decision = case_when(
+  mutate(final_decision = as.factor(case_when(
     final_finding %in% "SU" ~ "Sustained",
     final_finding %in% "DIS" ~ "Sustained",
-    final_finding == NA ~ "Missing",
+    is.na(final_finding) == TRUE ~ "Missing",
     final_finding %in% "NAF" ~ "No Affidavit or Cooperation",
     final_finding %in% "NC" ~ "No Affidavit or Cooperation",
     final_finding %in% "NS" ~ "Not Sustained",
     final_finding %in% "EX" ~ "Not Sustained",
     final_finding %in% "UN" ~ "Not Sustained")
-  )
+  )) %>%
+  group_by(final_decision, District_Name)  %>%
+  summarize(n = n())
 
- ggplot(data = data1,  aes(fill = final_decision,
-             x = District_Name,
-             y = n)
-         ) +
-  geom_bar(position = "fill", stat = "identity") +
-   theme_minimal() +
-  scale_fill_viridis_d() +
-  coord_flip() +
-   labs(title = "Proportion of Final Findings",
-        subtitle = "By Neighborhood",
-        x = "Proportion of Complaints",
-        y = "District Name"
-        ) + 
-   scale_fill_manual(labels = c("No Affidavit or Cooperation","Not Sustained","Sustained","Missing"), values = c("#f1eef6", "#d7b5d8", "#df65b0", "#ce1256"))
+#data1 %>%
+ # group_by(final_decision) %>%
+  #summarize(n = n())
+#reorder so that missing is at the end and change colors, take out the NA
+ #ggplot(data = data1,  aes(fill = factor(final_decision, levels = c("Not Sustained", "No Affidavit or Cooperation", "Missing", "Sustained")),
+  #           x = fct_relevel(District_Name), district_levels),
+   #          y = n)) +
+  #geom_bar(position = "fill", stat = "identity") +
+   #theme_minimal() +
+  #scale_fill_viridis_d() +
+  #coord_flip() +
+  # labs(title = "Proportion of Final Findings",
+   #     subtitle = "By Neighborhood",
+    #    x = "Proportion of Complaints",
+     #   y = "District Name",
+      #  fill = "Final Decision"
+       # ) 
 
 ```
   
