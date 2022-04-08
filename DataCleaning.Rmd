@@ -158,6 +158,7 @@ unsustained_data <- total_district_complaints_findings %>%
 missing_data <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name, Majority, Population) %>%
   filter(is.na(final_finding)) %>%
+  filter(!is.na(District_Name)) %>%
   summarize(n = n()) %>%
   mutate(complaints_per_capita = n/Population) 
   
@@ -172,13 +173,10 @@ missing_data <- total_district_complaints_findings %>%
        subtitle = "Colored by Racial Majority",
        x = "District Name",
        y = " Missing Complaints Per Capita")
-
-
 ```
   
   
 ```{r chicago spatial data}
-
 #no 21 or 23 district but 31st district included?
 
 chicago_police_district_spatial <- st_read(dsn = "/cloud/project/data/geo_export_2efb16ec-aa66-49b0-92a0-2d6f5e0f81d9.shp")
@@ -277,6 +275,27 @@ Latino_perc_m
 
 ```{r missing-perc-leaflet}
 # creating map showing neighborhoods with most missing data ie when the final finding is either NA (missing), NAF (no affidavit) or NC (no affidavit)
+#baseline complaints per capita
+ 
+bins_2 <- seq(from = 0, to = 0.06, by = 0.01)
+pal_per_cap <- colorBin("OrRd", domain = total_district_complaints_spatial, bins = bins_2)
 
-  
+ complaints_perc_m <- m %>%
+  addPolygons(
+    fillOpacity = 1,
+    color = "black",
+    opacity = 0.7,
+    weight = 1,
+    fillColor = ~pal_per_cap(total_district_complaints_spatial$`complaints_per_capita`))
+      
+complaints_perc_m <- complaints_perc_m %>%
+  addLegend(
+    position = "topright",
+    pal = pal_per_cap,
+    values = ~total_district_complaints_spatial$`complaints_per_capita`,
+    title = "Complaints per capita",
+    opacity = 1)
+
+complaints_perc_m
+
 ```
