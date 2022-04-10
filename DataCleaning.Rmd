@@ -135,6 +135,11 @@ data1 %>%
         ) 
 
 ```
+```{r some summary stats}
+total_district_complaints_findings %>%
+  group_by(final_finding) %>%
+  summarise(n = n(), perc_of_data = (n/71960)*100)
+```
 
   
   
