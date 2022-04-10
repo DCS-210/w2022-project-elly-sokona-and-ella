@@ -93,6 +93,7 @@ data1 <- total_district_complaints_findings %>%
 data1 %>%
   group_by(final_decision) %>%
   summarize(n = n())
+
 #reorder so that missing is at the end and change colors, take out the NA
  ggplot(data = data1,  aes(fill = factor(final_decision, levels = c("Missing", "Not Sustained", "No Affidavit or Cooperation", "Sustained")),
                            x = fct_relevel(District_Name), district_levels,
@@ -114,15 +115,15 @@ data1 %>%
 
 sustained_data <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name, Majority, Population) %>%
-  filter(final_finding == "SU" | final_finding == "DIS") %>%
+  filter(final_finding == "SU") %>%
   summarize(n = n()) %>%
   mutate(complaints_per_capita = n/Population) 
   
 
   ggplot(data = sustained_data, 
                 mapping = aes(
-                  x = fct_reorder(District_Name, n),
-                  y = n, 
+                  x = fct_reorder(District_Name, complaints_per_capita),
+                  y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
   coord_flip() +
@@ -132,26 +133,35 @@ sustained_data <- total_district_complaints_findings %>%
        y = " Sustained Complaints Per Capita")
 ```
   
-```{r complaints for missing/sustained decisions}
+```{r complaints for no cooperation/affidavit decisions}
 
-unsustained_data <- total_district_complaints_findings %>%
+no_ca_data <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name, Majority, Population) %>%
-  filter(!final_finding == "SU" & !final_finding == "DIS") %>%
+  filter(final_finding == "NAF") %>%
   summarize(n = n()) %>%
   mutate(complaints_per_capita = n/Population) 
   
 
-  ggplot(data = unsustained_data, 
+  ggplot(data = no_ca_data, 
                 mapping = aes(
-                  x = fct_reorder(District_Name, n),
-                  y = n, 
+                  x = fct_reorder(District_Name, complaints_per_capita),
+                  y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
   coord_flip() +
-  labs(title = " Unsustained Complaints per Capita by District Name",
+  labs(title = " Sustained Complaints per Capita by District Name",
        subtitle = "Colored by Racial Majority",
        x = "District Name",
-       y = " Unsustained Complaints Per Capita")
+       y = " Sustained Complaints Per Capita")
+```
+  
+```{r stats about demographics}
+
+#The districts of which demogrpahic majoirty compromise most of the data?
+
+total_district_complaints_findings %>%
+  group_by(Majority) %>%
+  summarise(n = n(), prop_of_data = n/71960)
 ```
   
 ```{r complaints for missing data}
@@ -164,8 +174,8 @@ missing_data <- total_district_complaints_findings %>%
   
  ggplot(data = missing_data, 
                 mapping = aes(
-                  x = fct_reorder(District_Name, n),
-                  y = n, 
+                  x = fct_reorder(District_Name, complaints_per_capita),
+                  y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
   coord_flip() +
@@ -175,127 +185,3 @@ missing_data <- total_district_complaints_findings %>%
        y = " Missing Complaints Per Capita")
 ```
   
-  
-```{r chicago spatial data}
-#no 21 or 23 district but 31st district included?
-
-chicago_police_district_spatial <- st_read(dsn = "/cloud/project/data/geo_export_2efb16ec-aa66-49b0-92a0-2d6f5e0f81d9.shp")
-
-
-total_district_complaints_spatial <- total_district_complaints %>%
-  mutate(`Latino%` = str_remove(`Latino%`, "%"),
-         `White%` = str_remove(`White%`, "%"),
-         `Black%` = str_remove(`Black%`, "%"),
-         `Asian%` = str_remove(`Asian%`, "%"),
-         `Native_American%` = str_remove(`Native_American%`, "%"),
-         `Other%` = str_remove(`Other%`, "%"),
-         `Latino%` = as.numeric(`Latino%`),
-         `White%` = as.numeric(`White%`),
-         `Black%` = as.numeric(`Black%`),
-         `Asian%` = as.numeric(`Asian%`),
-         `Native_American%` = as.numeric(`Native_American%`),
-         `Other%` = as.numeric(`Other%`)) %>%
-  mutate(current_unit = as.character(current_unit))%>%
-  left_join(chicago_police_district_spatial,
-                                    by = c("current_unit" = "dist_num")) %>%
-  st_as_sf() %>%
-  st_transform("+init=epsg:4326")
-
-bins <- seq(from = 0, to = 100, by = 12.5)
-pal_perc <- colorBin("OrRd", domain = total_district_complaints_spatial , bins = bins)
-#https://laurielbaker.github.io/DSCA_leaflet_mapping_in_r/slides/leaflet_slides3.html#58
- 
-m <- leaflet(total_district_complaints_spatial) %>%
-# Now add tiles to it
-  addTiles() %>%
-# Setting the middle of where the map should be and the zoom level
-  setView(-87.633506, 41.876067, zoom = 9.5) %>%
-  addProviderTiles(providers$CartoDB.Positron)
-```
-  
-```{r Black-perc-leaflet}
-Black_perc_m <- m %>%
-  addPolygons(
-    fillOpacity = 1,
-    color = "black",
-    opacity = 0.7,
-    weight = 1,
-    fillColor = ~pal_perc(total_district_complaints_spatial$`Black%`))
-      
-Black_perc_m <- Black_perc_m %>%
-  addLegend(
-    position = "topright",
-    pal = pal_perc,
-    values = ~total_district_complaints_spatial$`Black%`,
-    title = "Percent Black residents",
-    opacity = 1)
-
-Black_perc_m
-```
-  
-```{r White-perc-leaflet}
-White_perc_m <- m %>%
-  addPolygons(
-    fillOpacity = 1,
-    color = "black",
-    opacity = 0.7,
-    weight = 1,
-    fillColor = ~pal_perc(total_district_complaints_spatial$`White%`))
-      
-White_perc_m <- White_perc_m %>%
-  addLegend(
-    position = "topright",
-    pal = pal_perc,
-    values = ~total_district_complaints_spatial$`White%`,
-    title = "Percent White residents",
-    opacity = 1)
-
-White_perc_m
-```
-
-```{r Latino-perc-leaflet}
-Latino_perc_m <- m %>%
-  addPolygons(
-    fillOpacity = 1,
-    color = "black",
-    opacity = 0.7,
-    weight = 1,
-    fillColor = ~pal_perc(total_district_complaints_spatial$`Latino%`))
-      
-Latino_perc_m <- Latino_perc_m %>%
-  addLegend(
-    position = "topright",
-    pal = pal_perc,
-    values = ~total_district_complaints_spatial$`Latino%`,
-    title = "Percent Latino residents",
-    opacity = 1)
-
-Latino_perc_m
-```
-
-```{r missing-perc-leaflet}
-# creating map showing neighborhoods with most missing data ie when the final finding is either NA (missing), NAF (no affidavit) or NC (no affidavit)
-#baseline complaints per capita
- 
-bins_2 <- seq(from = 0, to = 0.06, by = 0.01)
-pal_per_cap <- colorBin("OrRd", domain = total_district_complaints_spatial, bins = bins_2)
-
- complaints_perc_m <- m %>%
-  addPolygons(
-    fillOpacity = 1,
-    color = "black",
-    opacity = 0.7,
-    weight = 1,
-    fillColor = ~pal_per_cap(total_district_complaints_spatial$`complaints_per_capita`))
-      
-complaints_perc_m <- complaints_perc_m %>%
-  addLegend(
-    position = "topright",
-    pal = pal_per_cap,
-    values = ~total_district_complaints_spatial$`complaints_per_capita`,
-    title = "Complaints per capita",
-    opacity = 1)
-
-complaints_perc_m
-
-```

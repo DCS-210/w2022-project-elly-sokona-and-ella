@@ -1,0 +1,177 @@
+Created a separate file for Leaflet Maps becasue R crashed everytime we ran the document all in one (too much RAM?)
+
+```{r load-data, echo = FALSE} 
+library(readr)
+library(tidyverse)
+library(forcats)
+library(kableExtra)
+library(sf)
+library(leaflet)
+install.packages("naniar")
+library(naniar)
+
+devtools::install_github("rstudio/leaflet.providers")
+
+  
+district_demographics <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/district_demographics/Districts.csv")
+
+active_duty_officers <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/CPD%20Employees%20active-duty-only.csv")
+
+#The officers accused
+complaints_accused <- read_csv("data/complaints-accused_2000-2016_2016-11.csv")
+
+#those who made the complaints
+complainants <- read_csv("data/complaints-complainants_2000-2016_2016-11 (1).csv")
+
+#What complaints were made (more categorical data)
+complaints_made <- read_csv("data/complaints-complaints_2000-2016_2016-11 (1).csv")
+
+units <- read.csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/current_and_past_units/Current_and_Past_CPD_Units_2016-05-06.csv")
+```
+
+```{r chicago spatial data}
+
+district_complaints <- complaints_accused %>%
+  filter(current_unit %in% 1:25) %>%
+  group_by(current_unit) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+
+total_district_complaints <- full_join(district_complaints,
+                                       district_demographics,
+                                       by = c("current_unit" = "District_No")) %>%
+  mutate(complaints_per_capita = n/Population)
+
+
+#no 21 or 23 district but 31st district included?
+
+chicago_police_district_spatial <- st_read(dsn = "/cloud/project/data/geo_export_2efb16ec-aa66-49b0-92a0-2d6f5e0f81d9.shp")
+
+
+
+#Removing % symbol, so the data can join
+total_district_complaints_spatial <- total_district_complaints %>%
+  mutate(`Latino%` = str_remove(`Latino%`, "%"),
+         `White%` = str_remove(`White%`, "%"),
+         `Black%` = str_remove(`Black%`, "%"),
+         `Asian%` = str_remove(`Asian%`, "%"),
+         `Native_American%` = str_remove(`Native_American%`, "%"),
+         `Other%` = str_remove(`Other%`, "%"),
+         `Latino%` = as.numeric(`Latino%`),
+         `White%` = as.numeric(`White%`),
+         `Black%` = as.numeric(`Black%`),
+         `Asian%` = as.numeric(`Asian%`),
+         `Native_American%` = as.numeric(`Native_American%`),
+         `Other%` = as.numeric(`Other%`)) %>%
+  mutate(current_unit = as.character(current_unit))%>%
+  left_join(chicago_police_district_spatial,
+                                    by = c("current_unit" = "dist_num")) %>%
+  st_as_sf() %>%
+  st_transform("+init=epsg:4326")
+
+
+#creating bins for our leaflet map
+bins <- seq(from = 0, to = 100, by = 12.5)
+pal_perc <- colorBin("OrRd", domain = total_district_complaints_spatial , bins = bins)
+#https://laurielbaker.github.io/DSCA_leaflet_mapping_in_r/slides/leaflet_slides3.html#58
+ 
+m <- leaflet(total_district_complaints_spatial) %>%
+# Now add tiles to it
+  addTiles() %>%
+# Setting the middle of where the map should be and the zoom level
+  setView(-87.633506, 41.876067, zoom = 9.5) %>%
+  addProviderTiles(providers$CartoDB.Positron)
+```
+  
+```{r Black-perc-leaflet}
+
+#map of distribution of black residents
+Black_perc_m <- m %>%
+  addPolygons(
+    fillOpacity = 1,
+    color = "black",
+    opacity = 0.7,
+    weight = 1,
+    fillColor = ~pal_perc(total_district_complaints_spatial$`Black%`))
+      
+Black_perc_m <- Black_perc_m %>%
+  addLegend(
+    position = "topright",
+    pal = pal_perc,
+    values = ~total_district_complaints_spatial$`Black%`,
+    title = "Percent Black residents",
+    opacity = 1)
+
+Black_perc_m
+```
+  
+```{r White-perc-leaflet}
+
+#map of distribution of white residents
+White_perc_m <- m %>%
+  addPolygons(
+    fillOpacity = 1,
+    color = "black",
+    opacity = 0.7,
+    weight = 1,
+    fillColor = ~pal_perc(total_district_complaints_spatial$`White%`))
+      
+White_perc_m <- White_perc_m %>%
+  addLegend(
+    position = "topright",
+    pal = pal_perc,
+    values = ~total_district_complaints_spatial$`White%`,
+    title = "Percent White residents",
+    opacity = 1)
+
+White_perc_m
+```
+
+```{r Latino-perc-leaflet}
+
+#map of distribution of latino residents
+Latino_perc_m <- m %>%
+  addPolygons(
+    fillOpacity = 1,
+    color = "black",
+    opacity = 0.7,
+    weight = 1,
+    fillColor = ~pal_perc(total_district_complaints_spatial$`Latino%`))
+      
+Latino_perc_m <- Latino_perc_m %>%
+  addLegend(
+    position = "topright",
+    pal = pal_perc,
+    values = ~total_district_complaints_spatial$`Latino%`,
+    title = "Percent Latino residents",
+    opacity = 1)
+
+Latino_perc_m
+```
+
+```{r missing-perc-leaflet}
+# creating map showing neighborhoods with most missing data ie when the final finding is either NA (missing), NAF (no affidavit) or NC (no affidavit)
+#baseline complaints per capita
+ 
+bins_2 <- seq(from = 0, to = 0.06, by = 0.01)
+pal_per_cap <- colorBin("OrRd", domain = total_district_complaints_spatial, bins = bins_2)
+
+ complaints_perc_m <- m %>%
+  addPolygons(
+    fillOpacity = 1,
+    color = "black",
+    opacity = 0.7,
+    weight = 1,
+    fillColor = ~pal_per_cap(total_district_complaints_spatial$`complaints_per_capita`))
+      
+complaints_perc_m <- complaints_perc_m %>%
+  addLegend(
+    position = "topright",
+    pal = pal_per_cap,
+    values = ~total_district_complaints_spatial$`complaints_per_capita`,
+    title = "Complaints per capita",
+    opacity = 1)
+
+complaints_perc_m
+
+```
