@@ -77,16 +77,40 @@ total_district_complaints_findings <- full_join(district_complaints_1,
 #stat = "identity"
 
 data1 <- total_district_complaints_findings %>%
-  mutate(final_decision = as.factor(case_when(
-    final_finding %in% "SU" ~ "Sustained",
-    final_finding %in% "DIS" ~ "Sustained",
-    is.na(final_finding) == TRUE ~ "Missing",
-    final_finding %in% "NAF" ~ "No Affidavit or Cooperation",
-    final_finding %in% "NC" ~ "No Affidavit or Cooperation",
-    final_finding %in% "NS" ~ "Not Sustained",
-    final_finding %in% "EX" ~ "Not Sustained",
-    final_finding %in% "UN" ~ "Not Sustained")
-  )) %>%
+  mutate(final_decision = 
+           as.factor(case_when(final_finding %in% "SU" ~ "Sustained",
+                               final_finding %in% "DIS" ~ "Sustained",
+                               is.na(final_finding) == TRUE ~ "Missing",
+                               final_finding %in% "NAF" ~ "No Affidavit or Cooperation",
+                               final_finding %in% "NC" ~ "No Affidavit or Cooperation",
+                               final_finding %in% "NS" ~ "Not Sustained",
+                               final_finding %in% "EX" ~ "Not Sustained",
+                               final_finding %in% "UN" ~ "Not Sustained",
+                               ))) %>%
+  mutate(District_Name = fct_relevel(District_Name,
+                                     "Central",
+                                     "Englewood",
+                                     "Harrison",
+                                     "Calumet",
+                                     "Grand Crossing",
+                                     "Gresham",
+                                     "Austin",
+                                     "Morgan Park",
+                                     "Wentworth",
+                                     "Near North",
+                                     "South Chicago",
+                                     "Ogden",
+                                     "Lincoln",
+                                     "Near West",
+                                     "Chicago Lawn",
+                                     "Deering",
+                                     "Shakespeare",
+                                     "Town Hall",
+                                     "Rogers Park",
+                                     "Grand Central",
+                                     "Albany Park",
+                                     "Jefferson Park"
+                                     )) %>%
   group_by(final_decision, District_Name)  %>%
   summarize(n = n())
 
@@ -94,7 +118,9 @@ data1 %>%
   group_by(final_decision) %>%
   summarize(n = n())
 #reorder so that missing is at the end and change colors, take out the NA
- ggplot(data = data1,  aes(fill = factor(final_decision, levels = c("Missing", "Not Sustained", "No Affidavit or Cooperation", "Sustained")),
+  data1 %>%   
+  filter(is.na(District_Name) == FALSE) %>%
+  ggplot(aes(fill = factor(final_decision, levels = c("Missing", "Not Sustained", "No Affidavit or Cooperation", "Sustained")),
                            x = fct_relevel(District_Name), district_levels,
                            y = n)) +
   geom_bar(position = "fill", stat = "identity") +
