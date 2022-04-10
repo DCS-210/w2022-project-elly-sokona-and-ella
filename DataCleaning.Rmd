@@ -15,10 +15,9 @@ library(sf)
 library(leaflet)
 install.packages("naniar")
 library(naniar)
+# install.packages("devtools")
+devtools::install_github("nhs-r-community/nhsrtheme")
 
-devtools::install_github("rstudio/leaflet.providers")
-
-  
 district_demographics <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/district_demographics/Districts.csv")
 
 active_duty_officers <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/CPD%20Employees%20active-duty-only.csv")
@@ -328,31 +327,6 @@ Black_perc_m
 #     opacity = 1)
 # 
 # complaints_perc_m
-
-```
-
-```{r}
-#just ignore this, I (ella) was trying to see if I could combine the demographic maps so that you could select which one with a button but so far I can't figure it out. 
-map <- m %>%
-  addPolygons(
-    fillOpacity = 1,
-    color = "black",
-    opacity = 0.7,
-    weight = 1,
-    fill = ~pal_perc(total_district_complaints_spatial$`complaints_per_capita`)) %>%
-  addProviderTiles(total_district_complaints_spatial$`Black%`, group = "Black Percent") %>%
-  addProviderTiles(total_district_complaints_spatial$`Latino%`, group = "Latino Percent") %>%
-   addProviderTiles(total_district_complaints_spatial$`White%`, group = "White Percent") %>%
-  addLayersControl(
-    baseGroups = 
-      c("Black Percent",
-        "Latino Percent",
-        "White Percent"), 
-    options = 
-      layersControlOptions(collapsed = FALSE))
-
-  
-map
 
 ```
 
