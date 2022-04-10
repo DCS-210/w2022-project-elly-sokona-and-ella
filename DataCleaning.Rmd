@@ -1,8 +1,8 @@
 ---
 title: "Visualizations"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 
@@ -306,6 +306,7 @@ Black_perc_m
 ```
 
 ```{r}
+#just ignore this, I (ella) was trying to see if I could combine the demographic maps so that you could select which one with a button but so far I can't figure it out. 
 map <- m %>%
   addPolygons(
     fillOpacity = 1,
