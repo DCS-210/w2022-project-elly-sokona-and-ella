@@ -1,8 +1,8 @@
 ---
 title: "Visualizations"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 
@@ -135,6 +135,8 @@ data1 %>%
         ) 
 
 ```
+
+  
   
 ```{r complaints for sustained decisions}
 
@@ -209,9 +211,6 @@ missing_data <- total_district_complaints_findings %>%
        x = "District Name",
        y = " Missing Complaints Per Capita")
 ```
-  
-<<<<<<< HEAD
-=======
   
 ```{r chicago spatial data}
 #no 21 or 23 district but 31st district included?
@@ -342,4 +341,3 @@ Black_perc_m
 
 ```
 
->>>>>>> 1eb1f47d11e7cf488e6cd77460ed8127889d08d0
