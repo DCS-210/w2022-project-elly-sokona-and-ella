@@ -6,12 +6,12 @@
     <meta name="author" content="By Elly Beckerman, Sokona Mangane and Ella Beiser" />
     <meta name="date" content="2022-04-14" />
     <script src="libs/header-attrs-2.13/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/nhsr.css" type="text/css" />
-    <link rel="stylesheet" href="css/nhsr-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="xarigan-themer.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
+
+
 
 
 
@@ -64,9 +64,8 @@ Often used for transitions
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "googlecode",
+"highlightStyle": "github",
 "highlightLines": true,
-"highlightLanguage": "r",
 "countIncrementalSlides": false,
 "ratio": "16:9"
 });
@@ -152,34 +151,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-<!--Hat-tip: https://www.garrickadenbuie.com/blog/xaringan-tip-logo-all-slides/-->
-<style>
-.logo {
-  background-image: url(img/logo-blue.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: absolute;
-  top: 1em;
-  right: 1em;
-  width: 110px;
-  height: 128px;
-  z-index: 0;
-}
-</style>
-
-<script>
-document
-  .querySelectorAll(
-    '.remark-slide-content' +
-    ':not(.title-slide)' +
-    // add additional classes to exclude here, e.g.
-    ':not(.inverse)' +
-    ':not(.hide-logo)'
-  )
-  .forEach(el => {
-    el.innerHTML += '<div class="logo"></div>';
-  });
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {
