@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Presentation title</title>
+    <title>Police Complaints in Chicago</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Team name   Names of team members" />
-    <meta name="date" content="2020-11-24" />
-    <script src="libs/header-attrs-2.5.3/header-attrs.js"></script>
+    <meta name="author" content="Elly Beckerman, Sokona Mangane" />
+    <meta name="date" content="2022-04-11" />
+    <script src="libs/header-attrs-2.13/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Presentation title
+# Police Complaints in Chicago
 ## Presentation subtitle (if any)
-### Team name <br> Names of team members
-### University of Edinburgh
-### 2020-11-24
+### Elly Beckerman, Sokona Mangane
+### Bates College
+### 2022-04-11
 
 ---
 
@@ -28,16 +28,11 @@ class: center, middle, inverse, title-slide
 
 
 
-```r
-style_xaringan(
-  title_slide_background_image = "img/confetti.jpg"
-)
-```
 
 
-class: center, middle
 
-## A statement of the overall goal / research question
+# A statement of the overall goal / research question
+
 
 ---
 
@@ -47,17 +42,21 @@ class: inverse, center, middle
 
 ---
 
-# Hello World
+# Introducing our data
 
-- Click the `Knit` button to compile your presentation
+- Data collected by the Invisible Institute, an investigative journalism company
 
-- Make sure to commit and push all resulting files to your GitHub repo
+- The Invisible Institute sued the city of Chicago for the release of complaint records against the Chicago Police Department
+
+- The files were released in 2016, revealing over 100,000 complaint records to the public
 
 ---
 
-class: inverse, middle, center
-
 # Using xaringan
+
+
+&lt;img src="presentation_files/figure-html/data-joins-1.png" title="Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows" alt="Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows" width="75%" /&gt;
+  
 
 ---
 
@@ -96,30 +95,22 @@ or text in two columns `\(^*\)`
 # Code
 
 
-```r
-# a boring regression
-model &lt;- lm(dist ~ speed, data = cars)
-tidy(model)
+```
+## # A tibble: 2 × 5
+##   term       estimate std.error statistic  p.value
+##   &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercep…   -17.6      6.76      -2.60 1.23e- 2
+## 2 speed          3.93     0.416      9.46 1.49e-12
 ```
 
 ```
-## # A tibble: 2 x 5
-##   term        estimate std.error statistic  p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)   -17.6      6.76      -2.60 1.23e- 2
-## 2 speed           3.93     0.416      9.46 1.49e-12
-```
-
-```r
-glance(model)
-```
-
-```
-## # A tibble: 1 x 12
-##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1     0.651         0.644  15.4      89.6 1.49e-12     1  -207.  419.  425.
-## # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+## # A tibble: 1 × 12
+##   r.squared adj.r.squared sigma statistic  p.value
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1     0.651         0.644  15.4      89.6 1.49e-12
+## # … with 7 more variables: df &lt;dbl&gt;,
+## #   logLik &lt;dbl&gt;, AIC &lt;dbl&gt;, BIC &lt;dbl&gt;,
+## #   deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
 ```
 
 ---
@@ -128,7 +119,7 @@ glance(model)
 
 
 
-&lt;img src="presentation_files/figure-html/plot-iris-1.png" width="80%" /&gt;
+&lt;img src="presentation_files/figure-html/plot-iris-1.png" width="75%" /&gt;
 
 ---
 
@@ -139,7 +130,7 @@ glance(model)
 - goes here
 ]
 .pull-right[
-&lt;img src="presentation_files/figure-html/unnamed-chunk-2-1.png" width="100%" /&gt;
+&lt;img src="presentation_files/figure-html/unnamed-chunk-1-1.png" width="100%" /&gt;
 ]
 
 ---

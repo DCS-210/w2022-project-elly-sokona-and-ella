@@ -24,13 +24,15 @@ library(forcats)
 library(kableExtra)
 library(sf)
 library(leaflet)
-install.packages("naniar")
+#install.packages("naniar")
 library(naniar)
 # set default options
 opts_chunk$set(echo = FALSE,
                fig.width = 7.252,
                fig.height = 4,
-               dpi = 300)
+               dpi = 300,
+               warning = FALSE,
+               message = FALSE)
 
 # uncomment the following lines if you want to use the NHS-R theme colours by default
 # scale_fill_continuous <- partial(scale_fill_nhs, discrete = FALSE)
@@ -40,34 +42,25 @@ opts_chunk$set(echo = FALSE,
 ```
 
 
-```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows "}
-#district_complaints <- complaints_accused %>%
- # filter(current_unit %in% 1:25) %>%
-  #group_by(current_unit) %>%
-  #summarise(n = n()) %>%
-  #arrange(desc(n))
+```{r Reading in the data, echo=FALSE, message=FALSE, warning = FALSE}
 
-#total_district_complaints <- full_join(district_complaints,
-  #                                     district_demographics,
- #                                      by = c("current_unit" = "District_No")) %>%
-#  mutate(complaints_per_capita = n/Population)
+district_demographics <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/district_demographics/Districts.csv")
 
-#total_district_complaints %>%
-#  filter(is.na(District_Name) == FALSE) %>%
- #        ggplot(mapping = aes(
-  #                x = fct_reorder(District_Name, complaints_per_capita),
-   #               y = complaints_per_capita, 
-    #            color = Majority)) +
-  #geom_point() +
-  #geom_segment(aes(x = fct_reorder(District_Name, complaints_per_capita), 
-   #                xend = fct_reorder(District_Name, complaints_per_capita), 
-    #               y = 0, yend = complaints_per_capita)) +
-  #coord_flip() +
-  #labs(title = "Complaints per Capita by District Name",
-   #    subtitle = "Colored by Racial Majority",
-    #   x = "District Name",
-     #  y = "Complaints Per Capita")
+active_duty_officers <- read_csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/CPD%20Employees%20active-duty-only.csv")
+
+#The officers accused
+complaints_accused <- read_csv("data/complaints-accused_2000-2016_2016-11.csv")
+
+#those who made the complaints
+complainants <- read_csv("data/complaints-complainants_2000-2016_2016-11 (1).csv")
+
+#What complaints were made (more categorical data)
+complaints_made <- read_csv("data/complaints-complaints_2000-2016_2016-11 (1).csv")
+
+units <- read.csv("https://raw.githubusercontent.com/invinst/chicago-police-data/master/data/context_data/current_and_past_units/Current_and_Past_CPD_Units_2016-05-06.csv")
+
 ```
+
 class: title-slide, left, bottom
 
 # `r rmarkdown::metadata$title`
@@ -76,6 +69,39 @@ class: title-slide, left, bottom
 ### `r rmarkdown::metadata$author`
 ### `r rmarkdown::metadata$date`
 
+---
+class: middle
+# Police Complaints
+
+```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows "}
+district_complaints <- complaints_accused %>%
+  filter(current_unit %in% 1:25) %>%
+  group_by(current_unit) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+
+total_district_complaints <- full_join(district_complaints,
+                                       district_demographics,
+                                       by = c("current_unit" = "District_No")) %>%
+  mutate(complaints_per_capita = n/Population)
+
+total_district_complaints %>%
+  filter(is.na(District_Name) == FALSE) %>%
+         ggplot(mapping = aes(
+                  x = fct_reorder(District_Name, complaints_per_capita),
+                  y = complaints_per_capita, 
+                color = Majority)) +
+  geom_point() +
+  geom_segment(aes(x = fct_reorder(District_Name, complaints_per_capita), 
+                   xend = fct_reorder(District_Name, complaints_per_capita), 
+                   y = 0, yend = complaints_per_capita)) +
+  coord_flip() +
+  labs(title = "Complaints per Capita by District Name",
+       subtitle = "Colored by Racial Majority",
+       x = "District Name",
+       y = "Complaints Per Capita")
+```
+  
 ---
 class: inverse, middle, center
 
@@ -99,7 +125,7 @@ Often used for transitions
 
 * third point
 
---- 
+---
 
 # Our Data
 
