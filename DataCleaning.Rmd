@@ -147,6 +147,8 @@ total_district_complaints_findings %>%
 sustained_data <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name, Majority, Population) %>%
   filter(final_finding == "SU") %>%
+  filter(is.na(District_Name) == FALSE) %>%
+
   summarize(n = n()) %>%
   mutate(complaints_per_capita = n/Population) 
   
@@ -157,6 +159,10 @@ sustained_data <- total_district_complaints_findings %>%
                   y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
+    geom_segment(aes(x = fct_reorder(District_Name, complaints_per_capita), 
+                     xend = fct_reorder(District_Name, complaints_per_capita), 
+                   y = 0,
+                   yend = complaints_per_capita)) +
   coord_flip() +
   labs(title = " Sustained Complaints per Capita by District Name",
        subtitle = "Colored by Racial Majority",
@@ -209,6 +215,10 @@ missing_data <- total_district_complaints_findings %>%
                   y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
+   geom_segment(aes(x = fct_reorder(District_Name, complaints_per_capita), 
+                    xend = fct_reorder(District_Name, complaints_per_capita), 
+                   y = 0, 
+                   yend = complaints_per_capita)) +
   coord_flip() +
   labs(title = " Missing Complaints per Capita by District Name",
        subtitle = "Colored by Racial Majority",
