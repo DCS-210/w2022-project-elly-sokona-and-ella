@@ -1,6 +1,6 @@
 ---
-title: "Presentation title"
-subtitle: "Presentation subtitle"
+#background-image: url("Chicago.jpg")
+title: "Police Complaints in Chicago"
 author: "By Elly Beckerman, Sokona Mangane and Ella Beiser"
 date: "April 14, 2022"
 output:
@@ -32,10 +32,10 @@ opts_chunk$set(echo = FALSE,
                dpi = 300)
 
 # uncomment the following lines if you want to use the NHS-R theme colours by default
-# scale_fill_continuous <- partial(scale_fill_nhs, discrete = FALSE)
-# scale_fill_discrete <- partial(scale_fill_nhs, discrete = TRUE)
-# scale_colour_continuous <- partial(scale_colour_nhs, discrete = FALSE)
-# scale_colour_discrete <- partial(scale_colour_nhs, discrete = TRUE)
+ scale_fill_continuous <- partial(scale_fill_nhs, discrete = FALSE)
+ scale_fill_discrete <- partial(scale_fill_nhs, discrete = TRUE)
+ scale_colour_continuous <- partial(scale_colour_nhs, discrete = FALSE)
+ scale_colour_discrete <- partial(scale_colour_nhs, discrete = TRUE)
 ```
 
 class: title-slide, left, bottom
@@ -55,7 +55,7 @@ Often used for transitions
 
 ---
 
-# A slide where bullets appear
+# Introduction
 
 --
 
@@ -68,3 +68,17 @@ Often used for transitions
 --
 
 * third point
+
+--- 
+
+# Our Data
+
+---
+
+# Limitations of our Data
+
+---
+
+# Next Steps
+
+---

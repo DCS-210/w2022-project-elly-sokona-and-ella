@@ -1,10 +1,9 @@
 ---
 title: "Visualizations"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
-
 
 ```{r load-data, echo = FALSE} 
 library(readr)
