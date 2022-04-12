@@ -124,7 +124,13 @@ knitr::include_graphics("img/web-chicago-skyline.webp")
 
 # Racial makeup of Chicago neighborhoods
 
-``` {r leaflet-demographics}
+``` {r leaflet-demographics, fig.alt = "Leaflet Maps of the Percentage of Black, white, and Latino residents by neighborhood. Maps are very segregated", echo = FALSE, fig.width = 10, out.width = "150%"}
+district_complaints <- complaints_accused %>%
+  filter(current_unit %in% 1:25) %>%
+  group_by(current_unit) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+
 total_district_complaints <- full_join(district_complaints,
                                        district_demographics,
                                        by = c("current_unit" = "District_No")) %>%
@@ -153,6 +159,11 @@ total_district_complaints_spatial <- total_district_complaints %>%
 
 bins <- seq(from = 0, to = 100, by = 12.5)
 pal_perc <- colorBin("OrRd", domain = total_district_complaints_spatial , bins = bins)
+
+m <- leaflet(total_district_complaints_spatial) %>%
+  addTiles() %>%
+  setView(-87.633506, 41.876067, zoom = 9.5) %>%
+  addProviderTiles(providers$CartoDB.Positron)
 
 Black_perc_m <- m %>%
   addPolygons(
@@ -207,12 +218,6 @@ Latino_perc_m <- Latino_perc_m %>%
 leafsync::sync(Black_perc_m, White_perc_m, Latino_perc_m, ncol = 3, sync = "all")
 ```
 
-- insert the demographic leaflet maps side by side
-???
-make leaflet showing majority?
-leafsnyc of all three
-
-Read the help documentation for leafsync because it will tell you how many you can sync. 
 ---
 
 # In which neighborhoods are there the most police complaints per capita?
