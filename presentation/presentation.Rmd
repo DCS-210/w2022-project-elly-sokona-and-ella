@@ -1,7 +1,6 @@
 ---
 title: "Police Complaints in Chicago"
-subtitle: "Presentation subtitle (if any)"
-author: "Elly Beckerman, Sokona Mangane"
+author: "Elly Beckerman, Sokona Mangane, and Ella Beiser"
 institute: "Bates College"
 date: "`r Sys.Date()`"
 output:
@@ -68,22 +67,13 @@ units <- read.csv("https://raw.githubusercontent.com/invinst/chicago-police-data
 
 ```{r background-image, include = FALSE}
 style_xaringan(
-  title_slide_background_image = "img/web-chicago-skyline.webp",
-  title_slide_text_color = "#000000")
+  title_slide_background_image = "img/Chicago.jpg",
+  title_slide_text_color = "#FFFFFF")
 ```
-
----
-
-# Background image
-.opacity[
-```{r background image}
-knitr::include_graphics("img/web-chicago-skyline.webp")
-```
-]
-
----
 
 # Introduction
+--
+
 - The data set is extensive and includes information about complaints against Chicago police officers from 1988 to 2018.
 
 --
@@ -104,6 +94,7 @@ knitr::include_graphics("img/web-chicago-skyline.webp")
 
 ---
 # Our Research Questions
+--
 - What are the racial makeups of different neighborhoods in Chicago? 
 
 --
@@ -118,7 +109,7 @@ knitr::include_graphics("img/web-chicago-skyline.webp")
 class: center, inverse, middle
 
 # What are the racial makeups of different neighborhoods in Chicago? 
-  
+
 ---
 
 # Racial makeup of Chicago neighborhoods
@@ -218,6 +209,7 @@ leafsync::sync(Black_perc_m, White_perc_m, Latino_perc_m, ncol = 3, sync = "all"
 ```
 
 ---
+class: center, inverse, middle
 
 # In which neighborhoods are there the most police complaints per capita?
 
@@ -291,6 +283,7 @@ total_district_complaints %>%
 ```
 
 ---
+
 # What happens to the complaints?
 .pull-left[- the good news: it's relatively consistent across neighborhoods
 - the bad news: nothing is happening to the complaints
@@ -375,6 +368,8 @@ total_district_complaints_findings %>%
 ```
 ]
 
+---
+
 # Sustained complaints
 .pull-left[
 - Some text
@@ -437,3 +432,8 @@ no_ca_data <- total_district_complaints_findings %>%
        x = "District",
        y = "Complaints Missing Affidavit per Capita")
 ```
+
+---
+
+#test slide
+
