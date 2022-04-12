@@ -115,7 +115,8 @@ class: center, inverse, middle
 
 # Racial makeup of Chicago neighborhoods
 
-``` {r leaflet-demographics, fig.alt = "Leaflet Maps of the Percentage of Black, white, and Latino residents by neighborhood. Maps are very segregated", echo = FALSE, fig.width = 10, out.width = "150%"}
+```{r leaflet data prep, echo = FALSE, warning = FALSE, message = FALSE, include = FALSE}
+
 district_complaints <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
   group_by(current_unit) %>%
@@ -147,6 +148,10 @@ total_district_complaints_spatial <- total_district_complaints %>%
                                     by = c("current_unit" = "dist_num")) %>%
   st_as_sf() %>%
   st_transform("+init=epsg:4326")
+
+```
+
+``` {r leaflet-demographics, fig.width = 10, out.width = "150%", fig.alt = "Leaflet Maps of the Percentage of Black, white, and Latino residents by neighborhood. Neighborhoods are very segregated", message = FALSE, echo = FALSE, warning = FALSE, error = FALSE}
 
 bins <- seq(from = 0, to = 100, by = 12.5)
 pal_perc <- colorBin("OrRd", domain = total_district_complaints_spatial , bins = bins)
@@ -217,12 +222,8 @@ class: center, inverse, middle
 ---
 
 # Where are complaints being made?
-.pull-left[
-- Excluding the first neighborhood, the eight neighborhoods with the most complaints per capita have majority Black residents.
-- goes here
-]
-.pull-right[
-```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows", echo = FALSE, fig.width = 10, out.width = "150%"}
+
+```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows", echo = FALSE, fig.width = 10, out.width = "100%"}
 district_complaints <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
   group_by(current_unit) %>%
@@ -250,13 +251,12 @@ total_district_complaints %>%
        x = "District Name",
        y = "Complaints Per Capita")
 ```
-  ]
   
 ---
 
 # Complaints per capita leaflet
 
-```{r complaints-perc-leaflet}
+```{r complaints-perc-leaflet, echo = FALSE, fig.width = 10, out.width = "100%"}
 # creating map showing neighborhoods with most missing data ie when the final finding is either NA (missing), NAF (no affidavit) or NC (no affidavit)
 #baseline complaints per capita
  
@@ -286,10 +286,7 @@ total_district_complaints %>%
 ---
 
 # What happens to the complaints?
-.pull-left[- the good news: it's relatively consistent across neighborhoods
-- the bad news: nothing is happening to the complaints
-]
-.pull-right[
+
 ```{r proportion-findings-vis}
 district_complaints_1 <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
@@ -339,9 +336,9 @@ data1 <- total_district_complaints_findings %>%
   group_by(final_decision, District_Name)  %>%
   summarize(n = n())
 
-data1 %>%
-  group_by(final_decision) %>%
-  summarize(n = n())
+# data1 %>%
+#   group_by(final_decision) %>%
+#   summarize(n = n())
 
 #reorder so that missing is at the end and change colors, take out the NA
   data1 %>%   
@@ -359,15 +356,20 @@ data1 %>%
         y = "Proportion of Complaints",
         fill = "Final Decision"
         ) 
-
 ```
+---
 
-```{r some summary stats}
-total_district_complaints_findings %>%
+# Final Finding Summery Statistics
+
+```{r some summary stats, echo = FALSE}
+findings_table <- total_district_complaints_findings %>%
   group_by(final_finding) %>%
-  summarise(n = n(), perc_of_data = (n/71960)*100)
+  summarise(n = n(), perc_of_data = (n/71960)*100) %>%
+  slice_max(order_by = n, n = 6)
+
+knitr::kable(findings_table, format = 'html')
 ```
-]
+
 
 ---
 
@@ -437,4 +439,5 @@ no_ca_data <- total_district_complaints_findings %>%
 ---
 
 #test slide
+---
 

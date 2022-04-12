@@ -322,6 +322,8 @@ total_district_complaints_spatial <- total_district_complaints %>%
   st_as_sf() %>%
   st_transform("+init=epsg:4326")
 
+write.csv(total_district_complaints_spatial, file = "data/total_district_complaints_spatial.csv")
+
 bins <- seq(from = 0, to = 100, by = 12.5)
 pal_perc <- colorBin("OrRd", domain = total_district_complaints_spatial , bins = bins)
 #https://laurielbaker.github.io/DSCA_leaflet_mapping_in_r/slides/leaflet_slides3.html#58
