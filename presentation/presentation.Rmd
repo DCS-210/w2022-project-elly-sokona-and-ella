@@ -122,7 +122,88 @@ knitr::include_graphics("img/web-chicago-skyline.webp")
 
 # Demographic Distribution
 
+``` {r leaflet-demographics}
+total_district_complaints <- full_join(district_complaints,
+                                       district_demographics,
+                                       by = c("current_unit" = "District_No")) %>%
+  mutate(complaints_per_capita = n/Population)
+
+chicago_police_district_spatial <- st_read(dsn = "/cloud/project/data/geo_export_2efb16ec-aa66-49b0-92a0-2d6f5e0f81d9.shp")
+
+total_district_complaints_spatial <- total_district_complaints %>%
+  mutate(`Latino%` = str_remove(`Latino%`, "%"),
+         `White%` = str_remove(`White%`, "%"),
+         `Black%` = str_remove(`Black%`, "%"),
+         `Asian%` = str_remove(`Asian%`, "%"),
+         `Native_American%` = str_remove(`Native_American%`, "%"),
+         `Other%` = str_remove(`Other%`, "%"),
+         `Latino%` = as.numeric(`Latino%`),
+         `White%` = as.numeric(`White%`),
+         `Black%` = as.numeric(`Black%`),
+         `Asian%` = as.numeric(`Asian%`),
+         `Native_American%` = as.numeric(`Native_American%`),
+         `Other%` = as.numeric(`Other%`)) %>%
+  mutate(current_unit = as.character(current_unit))%>%
+  left_join(chicago_police_district_spatial,
+                                    by = c("current_unit" = "dist_num")) %>%
+  st_as_sf() %>%
+  st_transform("+init=epsg:4326")
+
+bins <- seq(from = 0, to = 100, by = 12.5)
+pal_perc <- colorBin("OrRd", domain = total_district_complaints_spatial , bins = bins)
+
+Black_perc_m <- m %>%
+  addPolygons(
+    fillOpacity = 1,
+    color = "black",
+    opacity = 0.7,
+    weight = 1,
+    fillColor = ~pal_perc(total_district_complaints_spatial$`Black%`),
+    highlightOptions = highlightOptions(
+    weight = 5,
+    color = "#666",
+    fillOpacity = 0.7,
+    bringToFront = FALSE))
+Black_perc_m <- Black_perc_m %>%
+  addLegend(
+    position = "topright",
+    pal = pal_perc,
+    values = ~total_district_complaints_spatial$`Black%`,
+    title = "Percent Black residents",
+    opacity = 1)
+
+White_perc_m <- m %>%
+  addPolygons(
+    fillOpacity = 1,
+    color = "black",
+    opacity = 0.7,
+    weight = 1,
+    fillColor = ~pal_perc(total_district_complaints_spatial$`White%`))
+White_perc_m <- White_perc_m %>%
+  addLegend(
+    position = "topright",
+    pal = pal_perc,
+    values = ~total_district_complaints_spatial$`White%`,
+    title = "Percent White residents",
+    opacity = 1)
+ 
+Latino_perc_m <- m %>%
+  addPolygons(
+    fillOpacity = 1,
+    color = "black",
+    opacity = 0.7,
+    weight = 1,
+    fillColor = ~pal_perc(total_district_complaints_spatial$`Latino%`))
+Latino_perc_m <- Latino_perc_m %>%
+  addLegend(
+    position = "topright",
+    pal = pal_perc,
+    values = ~total_district_complaints_spatial$`Latino%`,
+    title = "Percent Latino residents",
+    opacity = 1)
+
 leafsync::sync(Black_perc_m, White_perc_m, Latino_perc_m, ncol = 3, sync = "all")
+```
 
 - insert the demographic leaflet maps side by side
 ???

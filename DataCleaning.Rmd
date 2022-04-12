@@ -85,7 +85,22 @@ data1 <- total_district_complaints_findings %>%
                                final_finding %in% "EX" ~ "Not Sustained",
                                final_finding %in% "UN" ~ "Not Sustained",
                                ))) %>%
-  mutate(District_Name = fct_relevel(District_Name,
+  group_by(final_decision, District_Name)  %>%
+  summarize(n = n())
+
+data1 %>%
+  group_by(final_decision) %>%
+  summarize(n = n())
+
+#reorder so that missing is at the end and change colors, take out the NA
+  data1 %>%   
+  filter(is.na(District_Name) == FALSE) %>%
+  ggplot(aes(fill = factor(final_decision, 
+                           levels = c("Missing", 
+                                      "Not Sustained", 
+                                      "No Affidavit or Cooperation", 
+                                      "Sustained")),
+             x = fct_rev(fct_relevel(District_Name, 
                                      "Central",
                                      "Englewood",
                                      "Harrison",
@@ -107,42 +122,9 @@ data1 <- total_district_complaints_findings %>%
                                      "Rogers Park",
                                      "Grand Central",
                                      "Albany Park",
-                                     "Jefferson Park"
-                                     )) %>%
-  group_by(final_decision, District_Name)  %>%
-  summarize(n = n())
-
-data1 %>%
-  group_by(final_decision) %>%
-  summarize(n = n())
-
-#reorder so that missing is at the end and change colors, take out the NA
-  data1 %>%   
-  filter(is.na(District_Name) == FALSE) %>%
-  ggplot(aes(fill = factor(final_decision, levels = c("Missing", "Not Sustained", "No Affidavit or Cooperation", "Sustained")),
-                           x = fct_rev(fct_relevel(District_Name, "Central",
-                                     "Englewood",
-                                     "Harrison",
-                                     "Calumet",
-                                     "Grand Crossing",
-                                     "Gresham",
-                                     "Austin",
-                                     "Morgan Park",
-                                     "Wentworth",
-                                     "Near North",
-                                     "South Chicago",
-                                     "Ogden",
-                                     "Lincoln",
-                                     "Near West",
-                                     "Chicago Lawn",
-                                     "Deering",
-                                     "Shakespeare",
-                                     "Town Hall",
-                                     "Rogers Park",
-                                     "Grand Central",
-                                     "Albany Park",
-                                     "Jefferson Park")), district_levels,
-                           y = n)) +
+                                     "Jefferson Park")), 
+                                     district_levels,
+             y = n)) +
   geom_bar(position = "fill", stat = "identity") +
   theme_minimal() +
   scale_fill_viridis_d() +
@@ -173,7 +155,29 @@ sustained_data <- total_district_complaints_findings %>%
 
   ggplot(data = sustained_data, 
                 mapping = aes(
-                  x = fct_reorder(District_Name, complaints_per_capita),
+                x = fct_rev(fct_relevel(District_Name, 
+                                     "Central",
+                                     "Englewood",
+                                     "Harrison",
+                                     "Calumet",
+                                     "Grand Crossing",
+                                     "Gresham",
+                                     "Austin",
+                                     "Morgan Park",
+                                     "Wentworth",
+                                     "Near North",
+                                     "South Chicago",
+                                     "Ogden",
+                                     "Lincoln",
+                                     "Near West",
+                                     "Chicago Lawn",
+                                     "Deering",
+                                     "Shakespeare",
+                                     "Town Hall",
+                                     "Rogers Park",
+                                     "Grand Central",
+                                     "Albany Park",
+                                     "Jefferson Park")),
                   y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
@@ -200,7 +204,29 @@ no_ca_data <- total_district_complaints_findings %>%
 
   ggplot(data = no_ca_data, 
                 mapping = aes(
-                  x = fct_reorder(District_Name, complaints_per_capita),
+                  x = fct_rev(fct_relevel(District_Name, 
+                                     "Central",
+                                     "Englewood",
+                                     "Harrison",
+                                     "Calumet",
+                                     "Grand Crossing",
+                                     "Gresham",
+                                     "Austin",
+                                     "Morgan Park",
+                                     "Wentworth",
+                                     "Near North",
+                                     "South Chicago",
+                                     "Ogden",
+                                     "Lincoln",
+                                     "Near West",
+                                     "Chicago Lawn",
+                                     "Deering",
+                                     "Shakespeare",
+                                     "Town Hall",
+                                     "Rogers Park",
+                                     "Grand Central",
+                                     "Albany Park",
+                                     "Jefferson Park")),
                   y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
@@ -234,7 +260,29 @@ missing_data <- total_district_complaints_findings %>%
   
  ggplot(data = missing_data, 
                 mapping = aes(
-                  x = fct_reorder(District_Name, complaints_per_capita),
+                  x = fct_rev(fct_relevel(District_Name, 
+                                     "Central",
+                                     "Englewood",
+                                     "Harrison",
+                                     "Calumet",
+                                     "Grand Crossing",
+                                     "Gresham",
+                                     "Austin",
+                                     "Morgan Park",
+                                     "Wentworth",
+                                     "Near North",
+                                     "South Chicago",
+                                     "Ogden",
+                                     "Lincoln",
+                                     "Near West",
+                                     "Chicago Lawn",
+                                     "Deering",
+                                     "Shakespeare",
+                                     "Town Hall",
+                                     "Rogers Park",
+                                     "Grand Central",
+                                     "Albany Park",
+                                     "Jefferson Park")),
                   y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
