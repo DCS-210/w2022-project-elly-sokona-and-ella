@@ -66,15 +66,12 @@ units <- read.csv("https://raw.githubusercontent.com/invinst/chicago-police-data
 
 ```
 
-.opacity[
+
 ```{r background-image, include = FALSE}
 style_xaringan(
   title_slide_background_image = "img/web-chicago-skyline.webp",
-  title_slide_text_color = "#000000",
-  header_background_text_color = "#FFFFFF")
-
+  title_slide_text_color = "#000000")
 ```
-]
 
 ---
 
@@ -92,7 +89,7 @@ knitr::include_graphics("img/web-chicago-skyline.webp")
 
 --
 
--  .content-box-gray[Our data was collected by the Invisible Institute, an investigative journalism company as part of their Citizen Police Data Project.]
+-  Our data was collected by the Invisible Institute, an investigative journalism company as part of their Citizen Police Data Project.
 
 --
 
@@ -119,7 +116,10 @@ knitr::include_graphics("img/web-chicago-skyline.webp")
 - What are the outcomes of police complaints in these neighborhoods?
 
 ---
+class: center, inverse, middle
+
 # What are the racial makeups of different neighborhoods in Chicago? 
+  
 ---
 
 # Racial makeup of Chicago neighborhoods
@@ -223,6 +223,7 @@ leafsync::sync(Black_perc_m, White_perc_m, Latino_perc_m, ncol = 3, sync = "all"
 # In which neighborhoods are there the most police complaints per capita?
 
 ---
+
 # Where are complaints being made?
 .pull-left[
 - Excluding the first neighborhood, the eight neighborhoods with the most complaints per capita have majority Black residents.
@@ -258,7 +259,9 @@ total_district_complaints %>%
        y = "Complaints Per Capita")
 ```
   ]
+  
 ---
+
 # Complaints per capita leaflet
 
 ```{r complaints-perc-leaflet}
