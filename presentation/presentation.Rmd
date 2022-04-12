@@ -6,7 +6,7 @@ institute: "Bates College"
 date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
-    css: xaringan-themer.css
+    css: xaringan-themer2.css
     lib_dir: libs
     nature:
       ratio: "16:9"
@@ -26,7 +26,7 @@ library(xaringanthemer)
 
 ```{r setup, include=FALSE}
 # For better figure resolution
-knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618, out.width = "100%", warning = FALSE, echo = FALSE)
+knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618, out.width = "90%", warning = FALSE, message = FALSE, echo = FALSE)
 ```
 
 ```{r load our packages, include = FALSE}
@@ -38,10 +38,11 @@ library(forcats)
 library(kableExtra)
 library(sf)
 library(leaflet)
+library(leafsync)
 #install.packages("naniar")
 library(naniar)
 # set default options
-devtools::install_github("thomasp85/patchwork")
+#devtools::install_github("thomasp85/patchwork")
 library(patchwork)
 
 ```
@@ -65,17 +66,33 @@ units <- read.csv("https://raw.githubusercontent.com/invinst/chicago-police-data
 
 ```
 
+.opacity[
 ```{r background-image, include = FALSE}
 style_xaringan(
-  title_slide_background_image = "img/web-chicago-skyline.webp"
-)
+  title_slide_background_image = "img/web-chicago-skyline.webp",
+  title_slide_text_color = "#000000",
+  header_background_text_color = "#FFFFFF")
+
 ```
+]
+
+---
+
+# Background image
+.opacity[
+```{r background image}
+knitr::include_graphics("img/web-chicago-skyline.webp")
+```
+]
+
+---
+
 # Introduction
 - The data set is extensive and includes information about complaints against Chicago police officers from 1988 to 2018.
 
 --
 
-- Our data was collected by the Invisible Institute, an investigative journalism company as part of their Citizen Police Data Project.
+-  .content-box-gray[Our data was collected by the Invisible Institute, an investigative journalism company as part of their Citizen Police Data Project.]
 
 --
 
@@ -105,8 +122,16 @@ style_xaringan(
 
 # Demographic Distribution
 
-- insert the demographic leaflet maps side by side
+leafsync::sync(Black_perc_m, White_perc_m, Latino_perc_m, ncol = 3, sync = "all")
 
+- insert the demographic leaflet maps side by side
+???
+make leaflet showing majority?
+leafsnyc of all three
+
+REad the help documentation for leafsync because it will tell you how many you can sync. 
+
+---
 # Complaints per capita
 .pull-left[
 - Excluding the first neighborhood, the eight neighborhoods with the most complaints per capita have majority Black residents.
@@ -249,6 +274,7 @@ data1 %>%
         ) 
 
 ```
+
 ```{r some summary stats}
 total_district_complaints_findings %>%
   group_by(final_finding) %>%
