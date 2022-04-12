@@ -72,7 +72,11 @@ style_xaringan(
 # Our Research Questions
 - What are the racial makeups of different neighborhoods in Chicago?
 
+--
+
 - In which neighborhoods are there the most police complaints per capita?
+
+--
 
 - What are the outcomes of police complaints?
 
@@ -221,7 +225,7 @@ data1 %>%
 - goes here
 ]
 .pull-right[
-```{r complaints for sustained decisions, echo = FALSE}
+```{r complaints for sustained decisions, echo = FALSE, warning = FALSE}
 
 sustained_data <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name, Majority, Population) %>%
@@ -249,6 +253,8 @@ sustained_data <- total_district_complaints_findings %>%
        y = " Sustained Complaints Per Capita")
 ```
 ]
+
+---
 # Layouts
 
 You can use plain text
