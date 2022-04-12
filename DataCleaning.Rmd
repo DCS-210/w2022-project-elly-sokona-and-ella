@@ -139,11 +139,8 @@ total_district_complaints_findings %>%
   group_by(final_finding) %>%
   summarise(n = n(), perc_of_data = (n/71960)*100)
 ```
-
-  
   
 ```{r complaints for sustained decisions}
-
 sustained_data <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name, Majority, Population) %>%
   filter(final_finding == "SU") %>%
@@ -175,6 +172,7 @@ sustained_data <- total_district_complaints_findings %>%
 no_ca_data <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name, Majority, Population) %>%
   filter(final_finding == "NAF") %>%
+  filter(is.na(District_Name) == FALSE) %>%
   summarize(n = n()) %>%
   mutate(complaints_per_capita = n/Population) 
   
@@ -185,11 +183,15 @@ no_ca_data <- total_district_complaints_findings %>%
                   y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
+    geom_segment(aes(x = fct_reorder(District_Name, complaints_per_capita), 
+                     xend = fct_reorder(District_Name, complaints_per_capita), 
+                   y = 0,
+                   yend = complaints_per_capita)) +
   coord_flip() +
-  labs(title = " Sustained Complaints per Capita by District Name",
+  labs(title = "Complaints Missing Affidavit per Capita by District",
        subtitle = "Colored by Racial Majority",
-       x = "District Name",
-       y = " Sustained Complaints Per Capita")
+       x = "District",
+       y = "Complaints Missing Affidavit per Capita")
 ```
   
 ```{r stats about demographics}
