@@ -135,7 +135,7 @@ a, a > code {
 }
 .title-slide {
   background-color: var(--title-slide-background-color);
-  background-image: url("img/web-chicago-skyline.jpg");
+  background-image: url("img/web-chicago-skyline.webp");
   background-size: cover;
 }
 .title-slide .remark-slide-number {

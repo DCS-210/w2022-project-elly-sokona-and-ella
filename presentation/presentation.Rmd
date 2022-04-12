@@ -42,11 +42,6 @@ library(leaflet)
 library(naniar)
 # set default options
 
- #uncomment the following lines if you want to use the NHS-R theme colours by default
- scale_fill_continuous <- partial(scale_fill_nhs, discrete = FALSE)
- scale_fill_discrete <- partial(scale_fill_nhs, discrete = TRUE)
- scale_colour_continuous <- partial(scale_colour_nhs, discrete = FALSE)
- scale_colour_discrete <- partial(scale_colour_nhs, discrete = TRUE)
 ```
 
 ```{r Reading in the data, echo=FALSE, message=FALSE, warning = FALSE}
@@ -70,12 +65,16 @@ units <- read.csv("https://raw.githubusercontent.com/invinst/chicago-police-data
 
 ```{r background-image, include = FALSE}
 style_xaringan(
-  title_slide_background_image = "img/web-chicago-skyline.jpg"
+  title_slide_background_image = "img/web-chicago-skyline.webp"
 )
 ```
 
-# A statement of the overall goal / research question
+# Our Research Questions
+- What are the racial makeups of different neighborhoods in Chicago?
 
+- In which neighborhoods are there the most police complaints per capita?
+
+- What are the outcomes of police complaints?
 
 ---
 
@@ -89,14 +88,22 @@ class: inverse, center, middle
 
 - Data collected by the Invisible Institute, an investigative journalism company
 
+--
+
 - The Invisible Institute sued the city of Chicago for the release of complaint records against the Chicago Police Department
+
+--
 
 - The files were released in 2016, revealing over 100,000 complaint records to the public
 
 ---
 
 # Complaints per capita
-
+.pull-left[
+- Some text
+- goes here
+]
+.pull-right[
 ```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows", echo = FALSE}
 district_complaints <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
@@ -125,21 +132,123 @@ total_district_complaints %>%
        x = "District Name",
        y = "Complaints Per Capita")
 ```
+  ]
+---
+
+# Proportion final findings
+.pull-left[
+- Some text
+- goes here
+]
+.pull-right[
+```{r proportion-findings-vis, echo = FALSE}
+district_complaints_1 <- complaints_accused %>%
+  filter(current_unit %in% 1:25) %>%
+  group_by(current_unit)
+
+total_district_complaints_findings <- full_join(district_complaints_1,
+                                       district_demographics,
+                                       by = c("current_unit" = "District_No"))
+
+#stat = "identity"
+
+data1 <- total_district_complaints_findings %>%
+  mutate(final_decision = 
+           as.factor(case_when(final_finding %in% "SU" ~ "Sustained",
+                               final_finding %in% "DIS" ~ "Sustained",
+                               is.na(final_finding) == TRUE ~ "Missing",
+                               final_finding %in% "NAF" ~ "No Affidavit or Cooperation",
+                               final_finding %in% "NC" ~ "No Affidavit or Cooperation",
+                               final_finding %in% "NS" ~ "Not Sustained",
+                               final_finding %in% "EX" ~ "Not Sustained",
+                               final_finding %in% "UN" ~ "Not Sustained",
+                               ))) %>%
+  mutate(District_Name = fct_relevel(District_Name,
+                                     "Central",
+                                     "Englewood",
+                                     "Harrison",
+                                     "Calumet",
+                                     "Grand Crossing",
+                                     "Gresham",
+                                     "Austin",
+                                     "Morgan Park",
+                                     "Wentworth",
+                                     "Near North",
+                                     "South Chicago",
+                                     "Ogden",
+                                     "Lincoln",
+                                     "Near West",
+                                     "Chicago Lawn",
+                                     "Deering",
+                                     "Shakespeare",
+                                     "Town Hall",
+                                     "Rogers Park",
+                                     "Grand Central",
+                                     "Albany Park",
+                                     "Jefferson Park"
+                                     )) %>%
+  group_by(final_decision, District_Name)  %>%
+  summarize(n = n())
+
+data1 %>%
+  group_by(final_decision) %>%
+  summarize(n = n())
+
+#reorder so that missing is at the end and change colors, take out the NA
+  data1 %>%   
+  filter(is.na(District_Name) == FALSE) %>%
+  ggplot(aes(fill = factor(final_decision, levels = c("Missing", "Not Sustained", "No Affidavit or Cooperation", "Sustained")),
+                           x = fct_relevel(District_Name), district_levels,
+                           y = n)) +
+  geom_bar(position = "fill", stat = "identity") +
+  theme_minimal() +
+  scale_fill_viridis_d() +
+  coord_flip() +
+   labs(title = "Proportion of Final Findings",
+        subtitle = "By District",
+        x = "District Name",
+        y = "Proportion of Complaints",
+        fill = "Final Decision"
+        ) 
+
+```
+]
+---
+
+# Sustained complaints
+.pull-left[
+- Some text
+- goes here
+]
+.pull-right[
+```{r complaints for sustained decisions, echo = FALSE}
+
+sustained_data <- total_district_complaints_findings %>%
+  group_by(final_finding, District_Name, Majority, Population) %>%
+  filter(final_finding == "SU") %>%
+  filter(is.na(District_Name) == FALSE) %>%
+
+  summarize(n = n()) %>%
+  mutate(complaints_per_capita = n/Population) 
   
----
 
-# xaringan
-
-- The presentation is created using the `xaringan` package
-
-- Use `---` to separate slides and `--` for incremental builds
-
---
-
-- Like this
-
----
-
+  ggplot(data = sustained_data, 
+                mapping = aes(
+                  x = fct_reorder(District_Name, complaints_per_capita),
+                  y = complaints_per_capita, 
+                color = Majority)) +
+  geom_point() +
+    geom_segment(aes(x = fct_reorder(District_Name, complaints_per_capita), 
+                     xend = fct_reorder(District_Name, complaints_per_capita), 
+                   y = 0,
+                   yend = complaints_per_capita)) +
+  coord_flip() +
+  labs(title = " Sustained Complaints per Capita by District Name",
+       subtitle = "Colored by Racial Majority",
+       x = "District Name",
+       y = " Sustained Complaints Per Capita")
+```
+]
 # Layouts
 
 You can use plain text

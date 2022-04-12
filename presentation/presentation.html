@@ -4,7 +4,7 @@
     <title>Police Complaints in Chicago</title>
     <meta charset="utf-8" />
     <meta name="author" content="Elly Beckerman, Sokona Mangane" />
-    <meta name="date" content="2022-04-11" />
+    <meta name="date" content="2022-04-12" />
     <script src="libs/header-attrs-2.13/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 ## Presentation subtitle (if any)
 ### Elly Beckerman, Sokona Mangane
 ### Bates College
-### 2022-04-11
+### 2022-04-12
 
 ---
 
@@ -31,8 +31,12 @@ class: center, middle, inverse, title-slide
 
 
 
-# A statement of the overall goal / research question
+# Our Research Questions
+- What are the racial makeups of different neighborhoods in Chicago?
 
+- In which neighborhoods are there the most police complaints per capita?
+
+- What are the outcomes of police complaints?
 
 ---
 
@@ -46,32 +50,67 @@ class: inverse, center, middle
 
 - Data collected by the Invisible Institute, an investigative journalism company
 
+--
+
 - The Invisible Institute sued the city of Chicago for the release of complaint records against the Chicago Police Department
+
+--
 
 - The files were released in 2016, revealing over 100,000 complaint records to the public
 
 ---
 
-# Using xaringan
-
-
+# Complaints per capita
+.pull-left[
+- Some text
+- goes here
+]
+.pull-right[
 &lt;img src="presentation_files/figure-html/data-joins-1.png" title="Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows" alt="Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows" width="75%" /&gt;
-  
-
+  ]
 ---
 
-# xaringan
+# Proportion final findings
+.pull-left[
+- Some text
+- goes here
+]
+.pull-right[
 
-- The presentation is created using the `xaringan` package
+```
+## `summarise()` has grouped output by 'final_decision'. You
+## can override using the `.groups` argument.
+```
 
-- Use `---` to separate slides and `--` for incremental builds
+```
+## # A tibble: 4 × 2
+##   final_decision                  n
+##   &lt;fct&gt;                       &lt;int&gt;
+## 1 Missing                        23
+## 2 No Affidavit or Cooperation    23
+## 3 Not Sustained                  23
+## 4 Sustained                      23
+```
 
---
-
-- Like this
-
+&lt;img src="presentation_files/figure-html/proportion-findings-vis-1.png" width="75%" /&gt;
+]
 ---
 
+# Sustained complaints
+.pull-left[
+- Some text
+- goes here
+]
+.pull-right[
+
+```
+## `summarise()` has grouped output by 'final_finding',
+## 'District_Name', 'Majority'. You can override using the
+## `.groups` argument.
+```
+
+&lt;img src="presentation_files/figure-html/complaints for sustained decisions-1.png" width="75%" /&gt;
+]
 # Layouts
 
 You can use plain text
@@ -97,20 +136,19 @@ or text in two columns `\(^*\)`
 
 ```
 ## # A tibble: 2 × 5
-##   term       estimate std.error statistic  p.value
-##   &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercep…   -17.6      6.76      -2.60 1.23e- 2
-## 2 speed          3.93     0.416      9.46 1.49e-12
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)   -17.6      6.76      -2.60 1.23e- 2
+## 2 speed           3.93     0.416      9.46 1.49e-12
 ```
 
 ```
 ## # A tibble: 1 × 12
-##   r.squared adj.r.squared sigma statistic  p.value
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1     0.651         0.644  15.4      89.6 1.49e-12
-## # … with 7 more variables: df &lt;dbl&gt;,
-## #   logLik &lt;dbl&gt;, AIC &lt;dbl&gt;, BIC &lt;dbl&gt;,
-## #   deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+##   r.squared adj.r.squared sigma statistic  p.value    df
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+## 1     0.651         0.644  15.4      89.6 1.49e-12     1
+## # … with 6 more variables: logLik &lt;dbl&gt;, AIC &lt;dbl&gt;,
+## #   BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
 ```
 
 ---
