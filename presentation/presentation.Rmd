@@ -66,7 +66,6 @@ units <- read.csv("https://raw.githubusercontent.com/invinst/chicago-police-data
 
 ```
 
-
 ```{r background-image, include = FALSE}
 style_xaringan(
   title_slide_background_image = "img/web-chicago-skyline.webp",
