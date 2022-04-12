@@ -77,8 +77,16 @@ class: center, middle, inverse, title-slide
 
 # Demographic Distribution
 
-- insert the demographic leaflet maps side by side
+leafsync::sync(Black_perc_m, White_perc_m, Latino_perc_m, ncol = 3, sync = "all")
 
+- insert the demographic leaflet maps side by side
+???
+make leaflet showing majority?
+leafsnyc of all three
+
+REad the help documentation for leafsync because it will tell you how many you can sync. 
+
+---
 # Complaints per capita
 .pull-left[
 - Excluding the first neighborhood, the eight neighborhoods with the most complaints per capita have majority Black residents.

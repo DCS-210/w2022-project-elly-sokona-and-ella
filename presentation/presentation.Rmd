@@ -119,8 +119,10 @@ knitr::include_graphics("img/web-chicago-skyline.webp")
 - What are the outcomes of police complaints in these neighborhoods?
 
 ---
+# What are the racial makeups of different neighborhoods in Chicago? 
+---
 
-# Demographic Distribution
+# Racial makeup of Chicago neighborhoods
 
 leafsync::sync(Black_perc_m, White_perc_m, Latino_perc_m, ncol = 3, sync = "all")
 
@@ -129,10 +131,13 @@ leafsync::sync(Black_perc_m, White_perc_m, Latino_perc_m, ncol = 3, sync = "all"
 make leaflet showing majority?
 leafsnyc of all three
 
-REad the help documentation for leafsync because it will tell you how many you can sync. 
+Read the help documentation for leafsync because it will tell you how many you can sync. 
+---
+
+# In which neighborhoods are there the most police complaints per capita?
 
 ---
-# Complaints per capita
+# Where are complaints being made?
 .pull-left[
 - Excluding the first neighborhood, the eight neighborhoods with the most complaints per capita have majority Black residents.
 - goes here
