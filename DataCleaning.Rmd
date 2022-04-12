@@ -328,7 +328,7 @@ Black_perc_m
 # Latino_perc_m
 ```
 
-```{r missing-perc-leaflet}
+```{r complaints-perc-leaflet}
 # creating map showing neighborhoods with most missing data ie when the final finding is either NA (missing), NAF (no affidavit) or NC (no affidavit)
 #baseline complaints per capita
  

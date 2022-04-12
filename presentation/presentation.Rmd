@@ -26,7 +26,7 @@ library(xaringanthemer)
 
 ```{r setup, include=FALSE}
 # For better figure resolution
-knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618, out.width = "75%", warning = FALSE, echo = FALSE)
+knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618, out.width = "100%", warning = FALSE, echo = FALSE)
 ```
 
 ```{r load our packages, include = FALSE}
@@ -41,6 +41,8 @@ library(leaflet)
 #install.packages("naniar")
 library(naniar)
 # set default options
+devtools::install_github("thomasp85/patchwork")
+library(patchwork)
 
 ```
 
@@ -70,7 +72,7 @@ style_xaringan(
 ```
 
 # Our Research Questions
-- What are the racial makeups of different neighborhoods in Chicago?
+- What are the racial makeups of different neighborhoods in Chicago? 
 
 --
 
@@ -78,37 +80,35 @@ style_xaringan(
 
 --
 
-- What are the outcomes of police complaints?
-
----
-
-class: inverse, center, middle
-
-# Section title
+- What are the outcomes of police complaints in these neighborhoods?
 
 ---
 
 # Introducing our data
 
-- Data collected by the Invisible Institute, an investigative journalism company
+- The data set is extensive and includes information about complaints against Chicago police officers from 1988 to 2018.
 
 --
 
-- The Invisible Institute sued the city of Chicago for the release of complaint records against the Chicago Police Department
+- Our data was collected by the Invisible Institute, an investigative journalism company as part of their Citizen Police Data Project.
 
 --
 
-- The files were released in 2016, revealing over 100,000 complaint records to the public
+- The Invisible Institute sued the city of Chicago for the release of complaint records against the Chicago Police Department.
+
+--
+
+- The files were released in 2016, revealing over 100,000 complaint records to the public.
 
 ---
 
 # Complaints per capita
 .pull-left[
-- Some text
+- Excluding the first neighborhood, the eight neighborhoods with the most complaints per capita have majority Black residents.
 - goes here
 ]
 .pull-right[
-```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows", echo = FALSE}
+```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows", echo = FALSE, fig.width = 10, out.width = "150%"}
 district_complaints <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
   group_by(current_unit) %>%
@@ -225,7 +225,7 @@ data1 %>%
 - goes here
 ]
 .pull-right[
-```{r complaints for sustained decisions, echo = FALSE, warning = FALSE}
+```{r complaints for sustained decisions, echo = FALSE, warning = FALSE, out.width = "100%"}
 
 sustained_data <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name, Majority, Population) %>%
@@ -255,8 +255,66 @@ sustained_data <- total_district_complaints_findings %>%
 ]
 
 ---
-# Layouts
+# Leaflets
+```{r chicago spatial data, include = FALSE, message = FALSE, warningn = FALSE}
+#no 21 or 23 district but 31st district included?
 
+chicago_police_district_spatial <- st_read(dsn = "/cloud/project/data/geo_export_2efb16ec-aa66-49b0-92a0-2d6f5e0f81d9.shp")
+
+
+total_district_complaints_spatial <- total_district_complaints %>%
+  mutate(`Latino%` = str_remove(`Latino%`, "%"),
+         `White%` = str_remove(`White%`, "%"),
+         `Black%` = str_remove(`Black%`, "%"),
+         `Asian%` = str_remove(`Asian%`, "%"),
+         `Native_American%` = str_remove(`Native_American%`, "%"),
+         `Other%` = str_remove(`Other%`, "%"),
+         `Latino%` = as.numeric(`Latino%`),
+         `White%` = as.numeric(`White%`),
+         `Black%` = as.numeric(`Black%`),
+         `Asian%` = as.numeric(`Asian%`),
+         `Native_American%` = as.numeric(`Native_American%`),
+         `Other%` = as.numeric(`Other%`)) %>%
+  mutate(current_unit = as.character(current_unit))%>%
+  left_join(chicago_police_district_spatial,
+                                    by = c("current_unit" = "dist_num")) %>%
+  st_as_sf() %>%
+  st_transform("+init=epsg:4326")
+
+bins <- seq(from = 0, to = 100, by = 12.5)
+pal_perc <- colorBin("OrRd", domain = total_district_complaints_spatial , bins = bins)
+#https://laurielbaker.github.io/DSCA_leaflet_mapping_in_r/slides/leaflet_slides3.html#58
+ 
+m <- leaflet(total_district_complaints_spatial) %>%
+# Now add tiles to it
+  addTiles() %>%
+# Setting the middle of where the map should be and the zoom level
+  setView(-87.633506, 41.876067, zoom = 9.5) %>%
+  addProviderTiles(providers$CartoDB.Positron)
+```
+  
+
+```{r White-perc-leaflet, include = TRUE}
+ White_perc_m <- m %>%
+   addPolygons(
+     fillOpacity = 1,
+     color = "black",
+     opacity = 0.7,
+     weight = 1,
+     fillColor = ~pal_perc(total_district_complaints_spatial$`White%`))
+       
+ White_perc_m <- White_perc_m %>%
+   addLegend(
+     position = "topright",
+     pal = pal_perc,
+     values = ~total_district_complaints_spatial$`White%`,
+     title = "Percent White residents",
+     opacity = 1)
+ 
+```
+
+
+---
 You can use plain text
 
 - or bullet points

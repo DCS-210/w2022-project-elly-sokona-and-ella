@@ -32,23 +32,25 @@ class: center, middle, inverse, title-slide
 
 
 # Our Research Questions
-- What are the racial makeups of different neighborhoods in Chicago?
+- What are the racial makeups of different neighborhoods in Chicago? 
+
+--
 
 - In which neighborhoods are there the most police complaints per capita?
 
-- What are the outcomes of police complaints?
+--
 
----
-
-class: inverse, center, middle
-
-# Section title
+- What are the outcomes of police complaints in these neighborhoods?
 
 ---
 
 # Introducing our data
 
-- Data collected by the Invisible Institute, an investigative journalism company
+- The data set is extensive and includes information about complaints against Chicago police officers from 1988 to 2018.
+
+--
+
+- Our data was collected by the Invisible Institute, an investigative journalism company as part of their Citizen Police Data Project.
 
 --
 
@@ -66,7 +68,7 @@ class: inverse, center, middle
 - goes here
 ]
 .pull-right[
-&lt;img src="presentation_files/figure-html/data-joins-1.png" title="Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows" alt="Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows" width="75%" /&gt;
+&lt;img src="presentation_files/figure-html/data-joins-1.png" title="Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows" alt="Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows" width="100%" /&gt;
   ]
 ---
 
@@ -78,8 +80,8 @@ class: inverse, center, middle
 .pull-right[
 
 ```
-## `summarise()` has grouped output by 'final_decision'. You
-## can override using the `.groups` argument.
+## `summarise()` has grouped output by 'final_decision'. You can override using
+## the `.groups` argument.
 ```
 
 ```
@@ -92,7 +94,7 @@ class: inverse, center, middle
 ## 4 Sustained                      23
 ```
 
-&lt;img src="presentation_files/figure-html/proportion-findings-vis-1.png" width="75%" /&gt;
+&lt;img src="presentation_files/figure-html/proportion-findings-vis-1.png" width="100%" /&gt;
 ]
 ---
 
@@ -104,15 +106,22 @@ class: inverse, center, middle
 .pull-right[
 
 ```
-## `summarise()` has grouped output by 'final_finding',
-## 'District_Name', 'Majority'. You can override using the
-## `.groups` argument.
+## `summarise()` has grouped output by 'final_finding', 'District_Name',
+## 'Majority'. You can override using the `.groups` argument.
 ```
 
-&lt;img src="presentation_files/figure-html/complaints for sustained decisions-1.png" width="75%" /&gt;
+&lt;img src="presentation_files/figure-html/complaints for sustained decisions-1.png" width="100%" /&gt;
 ]
-# Layouts
 
+---
+# Leaflets
+
+  
+
+
+
+
+---
 You can use plain text
 
 - or bullet points
@@ -144,11 +153,10 @@ or text in two columns `\(^*\)`
 
 ```
 ## # A tibble: 1 × 12
-##   r.squared adj.r.squared sigma statistic  p.value    df
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
-## 1     0.651         0.644  15.4      89.6 1.49e-12     1
-## # … with 6 more variables: logLik &lt;dbl&gt;, AIC &lt;dbl&gt;,
-## #   BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     0.651         0.644  15.4      89.6 1.49e-12     1  -207.  419.  425.
+## # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
 ```
 
 ---
@@ -157,7 +165,7 @@ or text in two columns `\(^*\)`
 
 
 
-&lt;img src="presentation_files/figure-html/plot-iris-1.png" width="75%" /&gt;
+&lt;img src="presentation_files/figure-html/plot-iris-1.png" width="100%" /&gt;
 
 ---
 
