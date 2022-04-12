@@ -95,6 +95,7 @@ style_xaringan(
 ---
 # Our Research Questions
 --
+
 - What are the racial makeups of different neighborhoods in Chicago? 
 
 --
