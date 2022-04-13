@@ -223,7 +223,7 @@ class: center, inverse, middle
 
 # Where are complaints being made?
 
-```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows", echo = FALSE, fig.width = 10, out.width = "100%"}
+```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows neighborhoods with the most complaints per capita are predominantly Black", echo = FALSE, fig.width = 10, out.width = "100%"}
 district_complaints <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
   group_by(current_unit) %>%
@@ -256,7 +256,7 @@ total_district_complaints %>%
 
 # Complaints per capita leaflet
 
-```{r complaints-perc-leaflet, fig.width = 10, out.width = "150%", fig.alt = "Leaflet Maps of the Percentage of Black, white, and Latino residents by neighborhood. Neighborhoods are very segregated", message = FALSE, echo = FALSE, warning = FALSE, error = FALSE}
+```{r complaints-perc-leaflet, fig.width = 10, out.width = "150%", fig.alt = "Leaflet Map Showing the complaints per capita. Highest number of complaints per capita are in neighborhoods that are majority Black, and one majority white neighboborhood", message = FALSE, echo = FALSE, warning = FALSE, error = FALSE}
 # creating map showing neighborhoods with most missing data ie when the final finding is either NA (missing), NAF (no affidavit) or NC (no affidavit)
 #baseline complaints per capita
  
@@ -284,10 +284,30 @@ total_district_complaints %>%
 ```
 
 ---
+class: center, inverse, middle
 
+#What are the outcomes of police complaints in these neighborhoods?
+
+---
+
+``` {r image-of-complaints-destination-1} 
+
+knitr::include_graphics("img/complaint-flowchart-1.png")
+
+```
+
+---
+
+``` {r image-of-complaints-destination-2} 
+
+knitr::include_graphics("img/complaint-flowchart-2.png")
+
+```
+
+---
 # What happens to the complaints?
 
-```{r proportion-findings-vis}
+```{r proportion-findings-vis-prep, echo = FALSE, warning = FALSE, message = FALSE, include = FALSE}
 district_complaints_1 <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
   group_by(current_unit)
@@ -309,7 +329,19 @@ data1 <- total_district_complaints_findings %>%
                                final_finding %in% "EX" ~ "Not Sustained",
                                final_finding %in% "UN" ~ "Not Sustained",
                                ))) %>%
-  mutate(District_Name = fct_relevel(District_Name,
+  group_by(final_decision, District_Name)  %>%
+  summarize(n = n())
+```
+
+```{r r proportion-findings-vis, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE}
+  data1 %>%   
+  filter(is.na(District_Name) == FALSE) %>%
+  ggplot(aes(fill = factor(final_decision, 
+                           levels = c("Missing", 
+                                      "Not Sustained", 
+                                      "No Affidavit or Cooperation", 
+                                      "Sustained")),
+             x = fct_rev(fct_relevel(District_Name, 
                                      "Central",
                                      "Englewood",
                                      "Harrison",
@@ -331,27 +363,15 @@ data1 <- total_district_complaints_findings %>%
                                      "Rogers Park",
                                      "Grand Central",
                                      "Albany Park",
-                                     "Jefferson Park"
-                                     )) %>%
-  group_by(final_decision, District_Name)  %>%
-  summarize(n = n())
-
-# data1 %>%
-#   group_by(final_decision) %>%
-#   summarize(n = n())
-
-#reorder so that missing is at the end and change colors, take out the NA
-  data1 %>%   
-  filter(is.na(District_Name) == FALSE) %>%
-  ggplot(aes(fill = factor(final_decision, levels = c("Missing", "Not Sustained", "No Affidavit or Cooperation", "Sustained")),
-                           x = fct_relevel(District_Name), district_levels,
-                           y = n)) +
+                                     "Jefferson Park")), 
+                                     district_levels,
+             y = n)) +
   geom_bar(position = "fill", stat = "identity") +
   theme_minimal() +
   scale_fill_viridis_d() +
   coord_flip() +
    labs(title = "Proportion of Final Findings",
-        subtitle = "By District",
+        subtitle = "By District (In descending order of per capita complaints)",
         x = "District Name",
         y = "Proportion of Complaints",
         fill = "Final Decision"
@@ -362,32 +382,59 @@ data1 <- total_district_complaints_findings %>%
 # Final Finding Summery Statistics
 
 ```{r some summary stats, echo = FALSE}
+
+#ask why NC and DIS weren't included originally and if they want the R table or knitted table
+
 findings_table <- total_district_complaints_findings %>%
   group_by(final_finding) %>%
   summarise(n = n(), perc_of_data = (n/71960)*100) %>%
-  slice_max(order_by = n, n = 6)
-findings_table
+  slice_max(order_by = n, n = 8) #n = 6 before
+#findings_table
 
 knitr::kable(findings_table, format = 'html')
 ```
-
 
 ---
 
 # Sustained complaints
 
-```{r complaints for sustained decisions, echo = FALSE, warning = FALSE, out.width = "100%"}
+```{r complaints-for-sustained-decisions-prep, echo = FALSE, warning = FALSE, message = FALSE, include = FALSE, out.width = "100%"}
 
 sustained_data <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name, Majority, Population) %>%
   filter(final_finding == "SU") %>%
   filter(is.na(District_Name) == FALSE) %>%
-  summarize(n = n()) %>%
-  mutate(complaints_per_capita = n/Population) 
 
+  summarize(n = n()) %>%
+  mutate(complaints_per_capita = n/Population)
+```
+  
+```{r complaints-for-sustained-decisions, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, fig.width= 10, fig.alt= "Scatterplot of sustained police complaints per capita by district name colored by racial majority. Sustained complaints indicate that the allegation (complaint) was supported by sufficient evidence to justify disciplinary action. Recommendations of disciplinary action may range from violation noted to separation from the Department. Visualization shows districrts with the most complaints per capita are predominantly Black besides one, which is the Central District, a majority white District"}
   ggplot(data = sustained_data, 
                 mapping = aes(
-                  x = fct_reorder(District_Name, complaints_per_capita),
+                x = fct_rev(fct_relevel(District_Name, 
+                                     "Central",
+                                     "Englewood",
+                                     "Harrison",
+                                     "Calumet",
+                                     "Grand Crossing",
+                                     "Gresham",
+                                     "Austin",
+                                     "Morgan Park",
+                                     "Wentworth",
+                                     "Near North",
+                                     "South Chicago",
+                                     "Ogden",
+                                     "Lincoln",
+                                     "Near West",
+                                     "Chicago Lawn",
+                                     "Deering",
+                                     "Shakespeare",
+                                     "Town Hall",
+                                     "Rogers Park",
+                                     "Grand Central",
+                                     "Albany Park",
+                                     "Jefferson Park")),
                   y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
@@ -396,8 +443,8 @@ sustained_data <- total_district_complaints_findings %>%
                    y = 0,
                    yend = complaints_per_capita)) +
   coord_flip() +
-  labs(title = " Sustained Complaints per Capita by District Name",
-       subtitle = "Colored by Racial Majority",
+  labs(title = "Sustained Complaints per Capita",
+       subtitle = "By District (In descending order of per capita complaints), Colored by Racial Majority",
        x = "District Name",
        y = " Sustained Complaints Per Capita")
 ```
@@ -406,7 +453,7 @@ sustained_data <- total_district_complaints_findings %>%
 ---
 # Missing Affidavits
 
-```{r complaints for no cooperation/affidavit decisions}
+```{r complaints-noaffidavit-decisions-prep, echo = FALSE, warning = FALSE, message = FALSE, include = FALSE}
 
 no_ca_data <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name, Majority, Population) %>%
@@ -414,11 +461,34 @@ no_ca_data <- total_district_complaints_findings %>%
   filter(is.na(District_Name) == FALSE) %>%
   summarize(n = n()) %>%
   mutate(complaints_per_capita = n/Population) 
-  
+```
 
+```{r complaints-noaffidavit-decisions, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, fig.width= 10, fig.alt= "Scatterplot of police complaints with no affidavits per capita by district name colored by racial majority. If the accuser doesn't submit an affidavit, the anonymous complaint doesn't get investigated, unless the allegation  involved criminal conduct or a residency violation. Visualization shows neighborhoods with the most 'anonymous' complaints per capita are predominantly Black, with a few majority white districts in the middle and latino and mixed districts towards the bottom of the graph."}
   ggplot(data = no_ca_data, 
                 mapping = aes(
-                  x = fct_reorder(District_Name, complaints_per_capita),
+                  x = fct_rev(fct_relevel(District_Name, 
+                                     "Central",
+                                     "Englewood",
+                                     "Harrison",
+                                     "Calumet",
+                                     "Grand Crossing",
+                                     "Gresham",
+                                     "Austin",
+                                     "Morgan Park",
+                                     "Wentworth",
+                                     "Near North",
+                                     "South Chicago",
+                                     "Ogden",
+                                     "Lincoln",
+                                     "Near West",
+                                     "Chicago Lawn",
+                                     "Deering",
+                                     "Shakespeare",
+                                     "Town Hall",
+                                     "Rogers Park",
+                                     "Grand Central",
+                                     "Albany Park",
+                                     "Jefferson Park")),
                   y = complaints_per_capita, 
                 color = Majority)) +
   geom_point() +
@@ -427,10 +497,118 @@ no_ca_data <- total_district_complaints_findings %>%
                    y = 0,
                    yend = complaints_per_capita)) +
   coord_flip() +
-  labs(title = "Complaints Missing Affidavit per Capita by District",
-       subtitle = "Colored by Racial Majority",
+  labs(title = "Complaints Missing Affidavits per Capita by District",
+       subtitle = "By District (In descending order of per capita complaints), Colored by Racial Majority",
        x = "District",
        y = "Complaints Missing Affidavit per Capita")
 ```
 
+---
+
+#Missing Complaint Data
+
+```{r missing-complaint-data-prep, echo = FALSE, warning = FALSE, message = FALSE, include = FALSE}
+missing_data <- total_district_complaints_findings %>%
+  group_by(final_finding, District_Name, Majority, Population) %>%
+  filter(is.na(final_finding)) %>%
+  filter(!is.na(District_Name)) %>%
+  summarize(n = n()) %>%
+  mutate(complaints_per_capita = n/Population) 
+```
+
+```{r missing-complaint-data, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, fig.alt = "Scatterplot of missing police complaints per capita by district name colored by racial majority. Visualization shows neighborhoods with the most complaints per capita are predominantly Black besides one, which is the Central District, a majority white District", fig.width = 10}
+ ggplot(data = missing_data, 
+                mapping = aes(
+                  x = fct_rev(fct_relevel(District_Name, 
+                                     "Central",
+                                     "Englewood",
+                                     "Harrison",
+                                     "Calumet",
+                                     "Grand Crossing",
+                                     "Gresham",
+                                     "Austin",
+                                     "Morgan Park",
+                                     "Wentworth",
+                                     "Near North",
+                                     "South Chicago",
+                                     "Ogden",
+                                     "Lincoln",
+                                     "Near West",
+                                     "Chicago Lawn",
+                                     "Deering",
+                                     "Shakespeare",
+                                     "Town Hall",
+                                     "Rogers Park",
+                                     "Grand Central",
+                                     "Albany Park",
+                                     "Jefferson Park")),
+                  y = complaints_per_capita, 
+                color = Majority)) +
+  geom_point() +
+   geom_segment(aes(x = fct_reorder(District_Name, complaints_per_capita), 
+                    xend = fct_reorder(District_Name, complaints_per_capita), 
+                   y = 0, 
+                   yend = complaints_per_capita)) +
+  coord_flip() +
+  labs(title = " Missing Complaints per Capita by District Name",
+       subtitle = "By District (In descending order of per capita complaints), Colored by Racial Majority",
+       x = "District Name",
+       y = " Missing Complaints Per Capita")
+```
+
+---
+#Limitations to the Data
+--
+
+- Missing 1 District (31st)
+
+--
+
+- 3 of those districts removed (13th, 21st, 23rd).
+
+
+#Further Research
+
+--
+
+- Missing data in Black districts, why?
+
+--
+
+- More analysis on Central district
+
+--
+
+- What type of allegations were more likely to be sustained?
+
+--
+
+- If there’s a correlation between the type of allegations and the person who made it?
+
+--
+
+- Is there a correlation between the race of the officer versus the race of the accuser in these complaints?
+
+--
+
+- Repeat complaints
+
+--
+ 
+- Effectiveness of this filing complaints system (policies)
+
+--
+
+- Can explore how complaints have changed over the years
+
+---
+#Thank You for Listening!
+
+Any Questions?
+
+```{r last-slide}
+
+knitr::include_graphics("img/complaint-image-dcs-210.jpg")
+
+```
 
