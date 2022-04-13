@@ -178,7 +178,7 @@ Black_perc_m <- Black_perc_m %>%
     position = "topright",
     pal = pal_perc,
     values = ~total_district_complaints_spatial$`Black%`,
-    title = "Percent Black residents",
+    title = "Percent Black Residents",
     opacity = 1)
 
 White_perc_m <- m %>%
@@ -193,7 +193,7 @@ White_perc_m <- White_perc_m %>%
     position = "topright",
     pal = pal_perc,
     values = ~total_district_complaints_spatial$`White%`,
-    title = "Percent White residents",
+    title = "Percent White Residents",
     opacity = 1)
  
 Latino_perc_m <- m %>%
@@ -208,7 +208,7 @@ Latino_perc_m <- Latino_perc_m %>%
     position = "topright",
     pal = pal_perc,
     values = ~total_district_complaints_spatial$`Latino%`,
-    title = "Percent Latino residents",
+    title = "Percent Latino Residents",
     opacity = 1)
 
 leafsync::sync(Black_perc_m, White_perc_m, Latino_perc_m, ncol = 3, sync = "all")
@@ -246,8 +246,8 @@ total_district_complaints %>%
                    xend = fct_reorder(District_Name, complaints_per_capita), 
                    y = 0, yend = complaints_per_capita)) +
   coord_flip() +
-  labs(title = "Complaints per capita by district",
-       subtitle = "Colored by racial majority",
+  labs(title = "Complaints per capita by District",
+       subtitle = "Colored by Racial Majority",
        x = "District",
        y = "Complaints Per capita")
 ```
@@ -366,6 +366,7 @@ findings_table <- total_district_complaints_findings %>%
   group_by(final_finding) %>%
   summarise(n = n(), perc_of_data = (n/71960)*100) %>%
   slice_max(order_by = n, n = 6)
+findings_table
 
 knitr::kable(findings_table, format = 'html')
 ```
@@ -431,6 +432,5 @@ no_ca_data <- total_district_complaints_findings %>%
        x = "District",
        y = "Complaints Missing Affidavit per Capita")
 ```
-
 
 
