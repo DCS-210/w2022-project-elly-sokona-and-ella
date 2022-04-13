@@ -223,7 +223,7 @@ class: center, inverse, middle
 
 # Where are complaints being made?
 
-```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows", echo = FALSE, fig.width = 10, out.width = "90%"}
+```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows", echo = FALSE, fig.width = 10, out.width = "100%"}
 district_complaints <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
   group_by(current_unit) %>%
@@ -256,30 +256,30 @@ total_district_complaints %>%
 
 # Complaints per capita leaflet
 
-```{r complaints-perc-leaflet, echo = FALSE, fig.width = 10, out.width = "100%"}
+```{r complaints-perc-leaflet, fig.width = 10, out.width = "150%", fig.alt = "Leaflet Maps of the Percentage of Black, white, and Latino residents by neighborhood. Neighborhoods are very segregated", message = FALSE, echo = FALSE, warning = FALSE, error = FALSE}
 # creating map showing neighborhoods with most missing data ie when the final finding is either NA (missing), NAF (no affidavit) or NC (no affidavit)
 #baseline complaints per capita
  
-# bins_2 <- seq(from = 0, to = 0.06, by = 0.01)
-# pal_per_cap <- colorBin("OrRd", domain = total_district_complaints_spatial, bins = bins_2)
-# 
-#  complaints_perc_m <- m %>%
-#   addPolygons(
-#     fillOpacity = 1,
-#     color = "black",
-#     opacity = 0.7,
-#     weight = 1,
-#     fillColor = ~pal_per_cap(total_district_complaints_spatial$`complaints_per_capita`))
-#       
-# complaints_perc_m <- complaints_perc_m %>%
-#   addLegend(
-#     position = "topright",
-#     pal = pal_per_cap,
-#     values = ~total_district_complaints_spatial$`complaints_per_capita`,
-#     title = "Complaints per capita",
-#     opacity = 1)
-# 
-# complaints_perc_m
+ bins_2 <- seq(from = 0, to = 0.06, by = 0.01)
+ pal_per_cap <- colorBin("OrRd", domain = total_district_complaints_spatial, bins = bins_2)
+ 
+  complaints_perc_m <- m %>%
+   addPolygons(
+     fillOpacity = 1,
+     color = "black",
+     opacity = 0.7,
+     weight = 1,
+     fillColor = ~pal_per_cap(total_district_complaints_spatial$`complaints_per_capita`))
+       
+ complaints_perc_m <- complaints_perc_m %>%
+   addLegend(
+     position = "topright",
+     pal = pal_per_cap,
+     values = ~total_district_complaints_spatial$`complaints_per_capita`,
+     title = "Complaints per capita",
+     opacity = 1)
+ 
+ complaints_perc_m
 
 ```
 
@@ -374,11 +374,7 @@ knitr::kable(findings_table, format = 'html')
 ---
 
 # Sustained complaints
-.pull-left[
-- Some text
-- goes here
-]
-.pull-right[
+
 ```{r complaints for sustained decisions, echo = FALSE, warning = FALSE, out.width = "100%"}
 
 sustained_data <- total_district_complaints_findings %>%
@@ -404,7 +400,7 @@ sustained_data <- total_district_complaints_findings %>%
        x = "District Name",
        y = " Sustained Complaints Per Capita")
 ```
-]
+
 
 ---
 # Missing Affidavits
@@ -436,8 +432,5 @@ no_ca_data <- total_district_complaints_findings %>%
        y = "Complaints Missing Affidavit per Capita")
 ```
 
----
 
-#test slide
----
 
