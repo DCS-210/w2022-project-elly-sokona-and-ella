@@ -90,7 +90,7 @@ style_xaringan(
 
 --
 
-- why chicago stuff
+- Why we chose Chicago
 
 ---
 # Our Research Questions
@@ -178,7 +178,7 @@ Black_perc_m <- Black_perc_m %>%
     position = "topright",
     pal = pal_perc,
     values = ~total_district_complaints_spatial$`Black%`,
-    title = "Percent Black residents",
+    title = "Percent Black Residents",
     opacity = 1)
 
 White_perc_m <- m %>%
@@ -193,7 +193,7 @@ White_perc_m <- White_perc_m %>%
     position = "topright",
     pal = pal_perc,
     values = ~total_district_complaints_spatial$`White%`,
-    title = "Percent White residents",
+    title = "Percent White Residents",
     opacity = 1)
  
 Latino_perc_m <- m %>%
@@ -208,7 +208,7 @@ Latino_perc_m <- Latino_perc_m %>%
     position = "topright",
     pal = pal_perc,
     values = ~total_district_complaints_spatial$`Latino%`,
-    title = "Percent Latino residents",
+    title = "Percent Latino Residents",
     opacity = 1)
 
 leafsync::sync(Black_perc_m, White_perc_m, Latino_perc_m, ncol = 3, sync = "all")
@@ -246,40 +246,40 @@ total_district_complaints %>%
                    xend = fct_reorder(District_Name, complaints_per_capita), 
                    y = 0, yend = complaints_per_capita)) +
   coord_flip() +
-  labs(title = "Complaints per Capita by District Name",
+  labs(title = "Complaints per capita by District",
        subtitle = "Colored by Racial Majority",
-       x = "District Name",
-       y = "Complaints Per Capita")
+       x = "District",
+       y = "Complaints Per capita")
 ```
   
 ---
 
 # Complaints per capita leaflet
 
-```{r complaints-perc-leaflet, echo = FALSE, fig.width = 10, out.width = "100%"}
+```{r complaints-perc-leaflet, fig.width = 10, out.width = "150%", fig.alt = "Leaflet Maps of the Percentage of Black, white, and Latino residents by neighborhood. Neighborhoods are very segregated", message = FALSE, echo = FALSE, warning = FALSE, error = FALSE}
 # creating map showing neighborhoods with most missing data ie when the final finding is either NA (missing), NAF (no affidavit) or NC (no affidavit)
 #baseline complaints per capita
  
-# bins_2 <- seq(from = 0, to = 0.06, by = 0.01)
-# pal_per_cap <- colorBin("OrRd", domain = total_district_complaints_spatial, bins = bins_2)
-# 
-#  complaints_perc_m <- m %>%
-#   addPolygons(
-#     fillOpacity = 1,
-#     color = "black",
-#     opacity = 0.7,
-#     weight = 1,
-#     fillColor = ~pal_per_cap(total_district_complaints_spatial$`complaints_per_capita`))
-#       
-# complaints_perc_m <- complaints_perc_m %>%
-#   addLegend(
-#     position = "topright",
-#     pal = pal_per_cap,
-#     values = ~total_district_complaints_spatial$`complaints_per_capita`,
-#     title = "Complaints per capita",
-#     opacity = 1)
-# 
-# complaints_perc_m
+ bins_2 <- seq(from = 0, to = 0.06, by = 0.01)
+ pal_per_cap <- colorBin("OrRd", domain = total_district_complaints_spatial, bins = bins_2)
+ 
+  complaints_perc_m <- m %>%
+   addPolygons(
+     fillOpacity = 1,
+     color = "black",
+     opacity = 0.7,
+     weight = 1,
+     fillColor = ~pal_per_cap(total_district_complaints_spatial$`complaints_per_capita`))
+       
+ complaints_perc_m <- complaints_perc_m %>%
+   addLegend(
+     position = "topright",
+     pal = pal_per_cap,
+     values = ~total_district_complaints_spatial$`complaints_per_capita`,
+     title = "Complaints per capita",
+     opacity = 1)
+ 
+ complaints_perc_m
 
 ```
 
@@ -366,6 +366,7 @@ findings_table <- total_district_complaints_findings %>%
   group_by(final_finding) %>%
   summarise(n = n(), perc_of_data = (n/71960)*100) %>%
   slice_max(order_by = n, n = 6)
+findings_table
 
 knitr::kable(findings_table, format = 'html')
 ```
@@ -374,11 +375,7 @@ knitr::kable(findings_table, format = 'html')
 ---
 
 # Sustained complaints
-.pull-left[
-- Some text
-- goes here
-]
-.pull-right[
+
 ```{r complaints for sustained decisions, echo = FALSE, warning = FALSE, out.width = "100%"}
 
 sustained_data <- total_district_complaints_findings %>%
@@ -404,7 +401,7 @@ sustained_data <- total_district_complaints_findings %>%
        x = "District Name",
        y = " Sustained Complaints Per Capita")
 ```
-]
+
 
 ---
 # Missing Affidavits
@@ -436,8 +433,4 @@ no_ca_data <- total_district_complaints_findings %>%
        y = "Complaints Missing Affidavit per Capita")
 ```
 
----
-
-#test slide
----
 
