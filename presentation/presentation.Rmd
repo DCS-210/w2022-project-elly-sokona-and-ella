@@ -223,7 +223,7 @@ class: center, inverse, middle
 
 # Where are complaints being made?
 
-```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows neighborhoods with the most complaints per capita are predominantly Black", echo = FALSE, fig.width = 10, out.width = "100%"}
+```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows neighborhoods with the most complaints per capita are predominantly Black", echo = FALSE, fig.width = 10, fig.height= 5, out.width = "100%"}
 district_complaints <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
   group_by(current_unit) %>%
