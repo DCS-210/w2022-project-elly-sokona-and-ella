@@ -379,7 +379,7 @@ data1 <- total_district_complaints_findings %>%
 ```
 ---
 
-# Final Finding Summery Statistics
+# Final Finding Summary Statistics
 
 ```{r some summary stats, echo = FALSE}
 
