@@ -223,7 +223,7 @@ class: center, inverse, middle
 
 # Where are complaints being made?
 
-```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows neighborhoods with the most complaints per capita are predominantly Black", echo = FALSE, fig.width = 10, fig.height= 5, out.width = "100%"}
+```{r data-joins, fig.alt = "Scatterplot of police complaints per capita by district name colored by racial majority. Visualization shows neighborhoods with the most complaints per capita are predominantly Black", echo = FALSE, out.width = "75%"}
 district_complaints <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
   group_by(current_unit) %>%
@@ -256,7 +256,7 @@ total_district_complaints %>%
 
 # Complaints per capita leaflet
 
-```{r complaints-perc-leaflet, fig.width = 10, out.width = "150%", fig.alt = "Leaflet Map Showing the complaints per capita. Highest number of complaints per capita are in neighborhoods that are majority Black, and one majority white neighboborhood", message = FALSE, echo = FALSE, warning = FALSE, error = FALSE}
+```{r complaints-perc-leaflet, out.width = "70%", fig.alt = "Leaflet Map Showing the complaints per capita. Highest number of complaints per capita are in neighborhoods that are majority Black, and one majority white neighboborhood", message = FALSE, echo = FALSE, warning = FALSE, error = FALSE}
 # creating map showing neighborhoods with most missing data ie when the final finding is either NA (missing), NAF (no affidavit) or NC (no affidavit)
 #baseline complaints per capita
  
@@ -264,6 +264,7 @@ total_district_complaints %>%
  pal_per_cap <- colorBin("OrRd", domain = total_district_complaints_spatial, bins = bins_2)
  
   complaints_perc_m <- m %>%
+   setView(lng = -87.6298, lat = 41.5, zoom = 10) %>%
    addPolygons(
      fillOpacity = 1,
      color = "black",
@@ -307,7 +308,7 @@ knitr::include_graphics("img/complaint-flowchart-2.png")
 ---
 # What happens to the complaints?
 
-```{r proportion-findings-vis-prep, echo = FALSE, warning = FALSE, message = FALSE, include = FALSE}
+```{r proportion-findings-vis-prep, echo = FALSE, warning = FALSE, message = FALSE, include = FALSE, out.width = "70%"}
 district_complaints_1 <- complaints_accused %>%
   filter(current_unit %in% 1:25) %>%
   group_by(current_unit)
@@ -333,7 +334,7 @@ data1 <- total_district_complaints_findings %>%
   summarize(n = n())
 ```
 
-```{r r proportion-findings-vis, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE}
+```{r r proportion-findings-vis, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, out.width = "70%"}
   data1 %>%   
   filter(is.na(District_Name) == FALSE) %>%
   ggplot(aes(fill = factor(final_decision, 
@@ -398,7 +399,7 @@ knitr::kable(findings_table, format = 'html')
 
 # Sustained complaints
 
-```{r complaints-for-sustained-decisions-prep, echo = FALSE, warning = FALSE, message = FALSE, include = FALSE, out.width = "100%"}
+```{r complaints-for-sustained-decisions-prep, echo = FALSE, warning = FALSE, message = FALSE, include = FALSE, out.width = "70%"}
 
 sustained_data <- total_district_complaints_findings %>%
   group_by(final_finding, District_Name, Majority, Population) %>%
@@ -409,7 +410,7 @@ sustained_data <- total_district_complaints_findings %>%
   mutate(complaints_per_capita = n/Population)
 ```
   
-```{r complaints-for-sustained-decisions, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, fig.width= 10, fig.alt= "Scatterplot of sustained police complaints per capita by district name colored by racial majority. Sustained complaints indicate that the allegation (complaint) was supported by sufficient evidence to justify disciplinary action. Recommendations of disciplinary action may range from violation noted to separation from the Department. Visualization shows districrts with the most complaints per capita are predominantly Black besides one, which is the Central District, a majority white District"}
+```{r complaints-for-sustained-decisions, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, out.width = "70%", fig.alt= "Scatterplot of sustained police complaints per capita by district name colored by racial majority. Sustained complaints indicate that the allegation (complaint) was supported by sufficient evidence to justify disciplinary action. Recommendations of disciplinary action may range from violation noted to separation from the Department. Visualization shows districrts with the most complaints per capita are predominantly Black besides one, which is the Central District, a majority white District"}
   ggplot(data = sustained_data, 
                 mapping = aes(
                 x = fct_rev(fct_relevel(District_Name, 
@@ -463,7 +464,7 @@ no_ca_data <- total_district_complaints_findings %>%
   mutate(complaints_per_capita = n/Population) 
 ```
 
-```{r complaints-noaffidavit-decisions, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, fig.width= 10, fig.alt= "Scatterplot of police complaints with no affidavits per capita by district name colored by racial majority. If the accuser doesn't submit an affidavit, the anonymous complaint doesn't get investigated, unless the allegation  involved criminal conduct or a residency violation. Visualization shows neighborhoods with the most 'anonymous' complaints per capita are predominantly Black, with a few majority white districts in the middle and latino and mixed districts towards the bottom of the graph."}
+```{r complaints-noaffidavit-decisions, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, out.width = "70%", fig.alt= "Scatterplot of police complaints with no affidavits per capita by district name colored by racial majority. If the accuser doesn't submit an affidavit, the anonymous complaint doesn't get investigated, unless the allegation  involved criminal conduct or a residency violation. Visualization shows neighborhoods with the most 'anonymous' complaints per capita are predominantly Black, with a few majority white districts in the middle and latino and mixed districts towards the bottom of the graph."}
   ggplot(data = no_ca_data, 
                 mapping = aes(
                   x = fct_rev(fct_relevel(District_Name, 
@@ -602,11 +603,11 @@ missing_data <- total_district_complaints_findings %>%
 - Can explore how complaints have changed over the years
 
 ---
-#Thank You for Listening!
+# Thank You for Listening!
 
 Any Questions?
 
-```{r last-slide}
+```{r last-slide, out.width = "70%"}
 
 knitr::include_graphics("img/complaint-image-dcs-210.jpg")
 
