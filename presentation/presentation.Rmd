@@ -256,7 +256,7 @@ total_district_complaints %>%
 
 # Complaints per capita leaflet
 
-```{r complaints-perc-leaflet, out.width = "70%", fig.alt = "Leaflet Map Showing the complaints per capita. Highest number of complaints per capita are in neighborhoods that are majority Black, and one majority white neighboborhood", message = FALSE, echo = FALSE, warning = FALSE, error = FALSE}
+```{r complaints-perc-leaflet, out.width = "70%", fig.alt = "Leaflet Map Showing the complaints per capita. Highest number of complaints per capita are in neighborhoods that are majority Black, and one majority white neighboborhood, which is in the downtown center of the city", message = FALSE, echo = FALSE, warning = FALSE, error = FALSE}
 # creating map showing neighborhoods with most missing data ie when the final finding is either NA (missing), NAF (no affidavit) or NC (no affidavit)
 #baseline complaints per capita
  
@@ -336,7 +336,7 @@ data1 <- total_district_complaints_findings %>%
   summarize(n = n())
 ```
 
-```{r r proportion-findings-vis, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, out.width = "70%"}
+```{r r proportion-findings-vis, fig.alt = "Filled bar graph shows the proportion of complaints that fit into four catagories -- Sustained, No Affidavit or Cooperation, Not sustained, and Missing.  Proportions are relatively even across the neighborhoods, with not sustained complaints making up 60 to 70% of the data, No affidavit or cooperation between 20 and 30%, and missing and sustained generally aeoounf 5% each", message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, out.width = "70%"}
   data1 %>%   
   filter(is.na(District_Name) == FALSE) %>%
   ggplot(aes(fill = factor(final_decision, 
@@ -519,7 +519,7 @@ missing_data <- total_district_complaints_findings %>%
   mutate(complaints_per_capita = n/Population) 
 ```
 
-```{r missing-complaint-data, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, fig.alt = "Scatterplot of missing police complaints per capita by district name colored by racial majority. Visualization shows neighborhoods with the most complaints per capita are predominantly Black besides one, which is the Central District, a majority white District", fig.width = 10}
+```{r missing-complaint-data, message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, out.width = "70%", fig.alt = "Scatterplot of missing police complaints per capita by district name colored by racial majority. Visualization shows neighborhoods with the most complaints per capita are predominantly Black besides one, which is the Central District, a majority white District"}
  ggplot(data = missing_data, 
                 mapping = aes(
                   x = fct_rev(fct_relevel(District_Name, 
