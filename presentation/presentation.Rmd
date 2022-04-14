@@ -291,12 +291,13 @@ class: center, inverse, middle
 
 ---
 
+
 ``` {r image-of-complaints-destination-1} 
 
 knitr::include_graphics("img/complaint-flowchart-1.png")
 
 ```
-
+.footnote[Citizens Police Data Project]
 ---
 
 ``` {r image-of-complaints-destination-2} 
@@ -304,6 +305,7 @@ knitr::include_graphics("img/complaint-flowchart-1.png")
 knitr::include_graphics("img/complaint-flowchart-2.png")
 
 ```
+.footnote[Citizens Police Data Project]
 
 ---
 # What happens to the complaints?
@@ -380,7 +382,7 @@ data1 <- total_district_complaints_findings %>%
 ```
 ---
 
-# Final Finding Summery Statistics
+# Final Finding Summary Statistics
 
 ```{r some summary stats, echo = FALSE}
 
@@ -506,7 +508,7 @@ no_ca_data <- total_district_complaints_findings %>%
 
 ---
 
-#Missing Complaint Data
+# Missing Complaint Data
 
 ```{r missing-complaint-data-prep, echo = FALSE, warning = FALSE, message = FALSE, include = FALSE}
 missing_data <- total_district_complaints_findings %>%
@@ -567,6 +569,11 @@ missing_data <- total_district_complaints_findings %>%
 
 - 3 of those districts removed (13th, 21st, 23rd).
 
+--
+
+- Codebook incomplete
+
+---
 
 #Further Research
 
@@ -613,3 +620,4 @@ knitr::include_graphics("img/complaint-image-dcs-210.jpg")
 
 ```
 
+.footnote[Citizens Police Data Project]
