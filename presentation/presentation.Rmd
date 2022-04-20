@@ -345,7 +345,7 @@ total_district_complaints_findings %>%
   slice_max(order_by = n, n = 8) #n = 6 before
 #findings_table
 
-findings_table <- tribble(~ "Final Finding", ~"Number of Complaints", ~"% of Complaint Data",
+findings_table <- tribble(~"Final Finding", ~"Number of Complaints", ~"% of Complaint Data",
                           "Not Sustained", 21864, "30.38%",
                           "No Affidavit", 19995, "27.79%",
                           "Unfounded", 16241, "22.57%",
@@ -353,14 +353,25 @@ findings_table <- tribble(~ "Final Finding", ~"Number of Complaints", ~"% of Com
                           "Missing Data (NA)", 4607, "6.40%",
                           "Sustained", 4504, "6.26%",
                           "No Cooperation", 29, "0.04%",
-                          "Disiplined", 6, "0.008%")
+                          "Disciplined ", 6, "0.008%")
 
 ```
 
+.right-column[
 ```{r summary-stats-table, echo = FALSE}
-
-knitr::kable(findings_table, format = 'html')
+  knitr::kable(findings_table, format = 'html')
 ```
+]
+
+
+- No Affidavit and No Cooperation mean that the complaints are not examined at all
+
+- Not Sustained and Unfounded mean that the complaints were looked into and no wrongdoing was identified
+
+- Sustained and Disciplined mean that when the complaints were investigated there was some finding of wrongdoing
+
+- Exonerated mean that with there was an initial fidning of wrongdoing, that was later overturned
+
 
 ---
 # What happens to the complaints?
