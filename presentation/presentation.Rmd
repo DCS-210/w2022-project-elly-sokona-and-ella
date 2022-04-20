@@ -308,7 +308,8 @@ knitr::include_graphics("img/complaint-flowchart-2.png")
 .footnote[Citizens Police Data Project]
 
 ---
-# What happens to the complaints?
+
+# Final Finding Summary Statistics
 
 ```{r proportion-findings-vis-prep, echo = FALSE, warning = FALSE, message = FALSE, include = FALSE, out.width = "70%"}
 district_complaints_1 <- complaints_accused %>%
@@ -335,6 +336,34 @@ data1 <- total_district_complaints_findings %>%
   group_by(final_decision, District_Name)  %>%
   summarize(n = n())
 ```
+
+```{r summary-stats-prep, echo = FALSE, message = FALSE, include=FALSE}
+
+total_district_complaints_findings %>%
+  group_by(final_finding) %>%
+  summarise(n = n(), perc_of_data = (n/71960)*100) %>%
+  slice_max(order_by = n, n = 8) #n = 6 before
+#findings_table
+
+findings_table <- tribble(~ "Final Finding", ~"Number of Complaints", ~"% of Complaint Data",
+                          "Not Sustained", 21864, "30.38%",
+                          "No Affidavit", 19995, "27.79%",
+                          "Unfounded", 16241, "22.57%",
+                          "Exonerated", 4714, "6.55%",
+                          "Missing Data (NA)", 4607, "6.40%",
+                          "Sustained", 4504, "6.26%",
+                          "No Cooperation", 29, "0.04%",
+                          "Disiplined", 6, "0.008%")
+
+```
+
+```{r summary-stats-table, echo = FALSE}
+
+knitr::kable(findings_table, format = 'html')
+```
+
+---
+# What happens to the complaints?
 
 ```{r r proportion-findings-vis, fig.alt = "Filled bar graph shows the proportion of complaints that fit into four catagories -- Sustained, No Affidavit or Cooperation, Not sustained, and Missing.  Proportions are relatively even across the neighborhoods, with not sustained complaints making up 60 to 70% of the data, No affidavit or cooperation between 20 and 30%, and missing and sustained generally aeoounf 5% each", message = FALSE, echo = FALSE, warning = FALSE, error = FALSE, out.width = "70%"}
   data1 %>%   
@@ -380,23 +409,6 @@ data1 <- total_district_complaints_findings %>%
         fill = "Final Decision"
         ) 
 ```
----
-
-# Final Finding Summary Statistics
-
-```{r some summary stats, echo = FALSE}
-
-#ask why NC and DIS weren't included originally and if they want the R table or knitted table
-
-findings_table <- total_district_complaints_findings %>%
-  group_by(final_finding) %>%
-  summarise(n = n(), perc_of_data = (n/71960)*100) %>%
-  slice_max(order_by = n, n = 8) #n = 6 before
-#findings_table
-
-knitr::kable(findings_table, format = 'html')
-```
-
 ---
 
 # Sustained complaints
