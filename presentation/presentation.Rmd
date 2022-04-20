@@ -161,6 +161,21 @@ m <- leaflet(total_district_complaints_spatial) %>%
   setView(-87.633506, 41.876067, zoom = 9.5) %>%
   addProviderTiles(providers$CartoDB.Positron)
 
+label_black <- sprintf("<strong>%s</strong><br/>%g percent", 
+                  total_district_complaints_spatial$District_Name,
+                  total_district_complaints_spatial$`Black%`) %>% 
+   lapply(htmltools::HTML)
+
+label_white <- sprintf("<strong>%s</strong><br/>%g percent", 
+                  total_district_complaints_spatial$District_Name,
+                  total_district_complaints_spatial$`White%`) %>% 
+   lapply(htmltools::HTML)
+
+label_latino <- sprintf("<strong>%s</strong><br/>%g percent", 
+                  total_district_complaints_spatial$District_Name,
+                  total_district_complaints_spatial$`Latino%`) %>% 
+   lapply(htmltools::HTML)
+
 Black_perc_m <- m %>%
   addPolygons(
     fillOpacity = 1,
@@ -168,11 +183,12 @@ Black_perc_m <- m %>%
     opacity = 0.7,
     weight = 1,
     fillColor = ~pal_perc(total_district_complaints_spatial$`Black%`),
-    highlightOptions = highlightOptions(
-    weight = 5,
-    color = "#666",
-    fillOpacity = 0.7,
-    bringToFront = FALSE))
+    highlight = highlightOptions(
+        weight = 3,
+        color = "blue",
+        fillOpacity = 1,
+        bringToFront = TRUE),
+      label = label_black)
 Black_perc_m <- Black_perc_m %>%
   addLegend(
     position = "topright",
@@ -187,7 +203,13 @@ White_perc_m <- m %>%
     color = "black",
     opacity = 0.7,
     weight = 1,
-    fillColor = ~pal_perc(total_district_complaints_spatial$`White%`))
+    fillColor = ~pal_perc(total_district_complaints_spatial$`White%`),
+     highlight = highlightOptions(
+        weight = 3,
+        color = "blue",
+        fillOpacity = 1,
+        bringToFront = TRUE),
+      label = label_white)
 White_perc_m <- White_perc_m %>%
   addLegend(
     position = "topright",
@@ -202,7 +224,13 @@ Latino_perc_m <- m %>%
     color = "black",
     opacity = 0.7,
     weight = 1,
-    fillColor = ~pal_perc(total_district_complaints_spatial$`Latino%`))
+    fillColor = ~pal_perc(total_district_complaints_spatial$`Latino%`),
+     highlight = highlightOptions(
+        weight = 3,
+        color = "blue",
+        fillOpacity = 1,
+        bringToFront = TRUE),
+      label = label_latino)
 Latino_perc_m <- Latino_perc_m %>%
   addLegend(
     position = "topright",
@@ -263,6 +291,11 @@ total_district_complaints %>%
  bins_2 <- seq(from = 0, to = 0.06, by = 0.01)
  pal_per_cap <- colorBin("OrRd", domain = total_district_complaints_spatial, bins = bins_2)
  
+label_complaints <- sprintf("<strong>%s</strong><br/>%g complaints per capita", 
+                total_district_complaints_spatial$District_Name,
+                total_district_complaints_spatial$complaints_per_capita) %>% 
+  lapply(htmltools::HTML)
+ 
   complaints_perc_m <- m %>%
    setView(lng = -87.6298, lat = 41.5, zoom = 10) %>%
    addPolygons(
@@ -270,7 +303,13 @@ total_district_complaints %>%
      color = "black",
      opacity = 0.7,
      weight = 1,
-     fillColor = ~pal_per_cap(total_district_complaints_spatial$`complaints_per_capita`))
+     fillColor = ~pal_per_cap(total_district_complaints_spatial$`complaints_per_capita`),
+      highlight = highlightOptions(
+        weight = 3,
+        color = "blue",
+        fillOpacity = 1,
+        bringToFront = TRUE),
+      label = label_complaints)
        
  complaints_perc_m <- complaints_perc_m %>%
    addLegend(
