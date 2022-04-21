@@ -12,6 +12,7 @@ library(forcats)
 library(kableExtra)
 library(sf)
 library(leaflet)
+library(ggridges)
 #install.packages("naniar")
 library(naniar)
 # install.packages("devtools")
@@ -427,4 +428,3 @@ Black_perc_m
 # complaints_perc_m
 
 ```
-

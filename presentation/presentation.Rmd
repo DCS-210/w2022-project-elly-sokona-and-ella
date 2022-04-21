@@ -409,7 +409,7 @@ findings_table <- tribble(~"Final Finding", ~"Number of Complaints", ~"% of Comp
 
 - Sustained and Disciplined mean that when the complaints were investigated there was some finding of wrongdoing
 
-- Exonerated mean that with there was an initial fidning of wrongdoing, that was later overturned
+- Exonerated mean that with there was an initial finding of wrongdoing, that was later overturned
 
 
 ---
@@ -620,6 +620,29 @@ missing_data <- total_district_complaints_findings %>%
        x = "District Name",
        y = " Missing Complaints Per Capita")
 ```
+
+---
+
+#Major Findings
+
+--
+
+- Our first lollipop plot illustrated that besides two districts (Central and Near North, the 10 districts with the most complaints per capita were majority Black. 
+
+--
+
+- In considering the outcomes of police complaints Wentworth, a majority Black district which didn’t have the most complains per capita, had the most sustained complaints out of all of the districts; despite this, most districts align with the distribution of findings among the whole data, with no one district being disproportionate. 
+
+--
+
+- It is worth noting that Central (majority white) had the second most sustained complaints per capita. It also had the most missing complaints per capita, followed by a number of Black majority districts. 
+
+--
+
+- It is also worth noting that the top 6 no affidavit complaints per capita were in Black majority districts. 
+--
+
+- All of our findings confirmed our initial expectations about what the data would reveal. Chicago’s long history of housing segregation and current continued housing segregation allowed us to see a stark contrast between the way neighborhoods with majority Black residents are policed and how majority white neighborhoods are.
 
 ---
 #Limitations to the Data
